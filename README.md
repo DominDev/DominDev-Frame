@@ -1,125 +1,188 @@
 # Frame
 
-Aplikacja do wyboru zdjęć z rodzinnej sesji fotograficznej. Pięć osób ocenia zdjęcia
-niezależnie, admin zbiera wyniki i na tej podstawie wybiera kadry do obróbki.
+**Rodzinny wybór zdjęć bez arkuszy, wiadomości i zgadywania nazw plików.**
 
-**Adres aplikacji:** https://domindev.github.io/DominDev-Frame/
+Frame pomaga pięciu osobom niezależnie przejrzeć zdjęcia z rodzinnej sesji, wystawić oceny,
+zaznaczyć ulubione i omówić kadry. Administrator otrzymuje wspólny ranking oraz gotową listę
+nazw plików do przekazania fotografowi.
 
----
+[Otwórz aplikację](https://domindev.github.io/DominDev-Frame/) ·
+[Sprawdź publikację](https://github.com/DominDev/DominDev-Frame/actions/workflows/deploy.yml)
 
-## Dla rodziny
+> Dostęp do galerii i danych jest ograniczony do zaproszonych osób. Aplikacja nie udostępnia
+> rejestracji; konto i hasło przekazuje administrator rodzinie.
 
-Wchodzisz na powyższy link, logujesz się adresem e-mail i hasłem, które dostałeś.
-Oceniasz zdjęcia w skali od 1 do 5:
+## Dlaczego powstał Frame
+
+Wybór kilkuset podobnych kadrów szybko zamienia się w serię wiadomości typu „to trzecie od
+końca” albo kilka niespójnych list. Frame utrzymuje cały proces w jednym miejscu:
+
+- każda osoba ocenia zdjęcia we własnym tempie;
+- średnia nie sugeruje decyzji przed oddaniem własnego głosu;
+- nazwa pliku pozostaje widoczna od galerii aż po raport;
+- wyniki aktualizują się na bieżąco dla wszystkich zalogowanych osób;
+- administrator może skopiować lub wyeksportować końcową listę bez ręcznego przepisywania.
+
+## Jak wygląda wybór
+
+1. Zaloguj się otrzymanym adresem e-mail i hasłem.
+2. Przeglądaj galerię albo przejdź od razu do pierwszego nieocenionego zdjęcia.
+3. Oceń kadr w skali 1–5. Ocenę możesz później zmienić lub usunąć.
+4. Dodaj zdjęcie do ulubionych albo zostaw komentarz, jeśli wymaga wspólnej decyzji.
+5. Administrator porównuje ranking, liczbę głosów i ulubione wszystkich osób.
 
 | Ocena | Znaczenie |
-|---|---|
+|---:|---|
 | 1 | odrzucam |
 | 2 | raczej nie |
 | 3 | możliwe |
 | 4 | bardzo dobre |
 | 5 | koniecznie wybierz |
 
-Ocenę możesz zmienić w każdej chwili. Zdjęcia możesz komentować (komentarze widzą
-wszyscy) i dodawać do ulubionych (te widzisz tylko Ty).
+## Najważniejsze funkcje
 
-Najszybszy sposób na przejrzenie całej sesji to **tryb skupienia**: jedno zdjęcie na
-pełnym ekranie, ocena klawiszami 1-5, przechodzenie strzałkami.
+### Dla każdej osoby
 
-Średnia ocen odsłania się dopiero po wystawieniu własnej. Chodzi o to, żeby cudze
-głosy nie sugerowały Ci Twojego.
+- galeria wszystkich zdjęć z oryginalnymi nazwami plików;
+- ocena 1–5 z możliwością późniejszej zmiany;
+- średnia odsłaniana dopiero po własnej ocenie;
+- prywatne ulubione widoczne również dla administratora;
+- wspólne komentarze podpisane imieniem;
+- filtry zdjęć nieocenionych, ulubionych i skomentowanych;
+- dodatkowe filtrowanie po własnej ocenie i średniej;
+- sortowanie po nazwie, średniej, liczbie głosów lub komentarzach;
+- pasek postępu oraz szybkie przejście do pierwszego nieocenionego kadru;
+- zmiana własnego hasła bez opuszczania aplikacji.
 
-### Jak obejrzeć szczegóły
+### Podgląd zdjęcia
 
-**Na komputerze:** przycisk „Lupka" albo klawisz `L` włącza soczewkę podążającą za
-kursorem. Kolejne naciśnięcia zmieniają powiększenie (1x, 2x, 3x) i wyłączają.
-Podwójne kliknięcie powiększa całe zdjęcie.
+- pełnoekranowy tryb skupienia z oceną, ulubionymi i komentarzami;
+- lupa podążająca za kursorem oraz powiększenie całego obrazu;
+- wygodne powiększanie i przesuwanie na ekranie dotykowym;
+- skróty `1`–`5` do oceniania, `←` i `→` do nawigacji, `F` do ulubionych,
+  `L` do lupy oraz `Esc` do zamknięcia.
 
-**Na telefonie:** dotknij dwukrotnie w miejscu, które chcesz obejrzeć. Są dwa stopnie
-powiększenia, trzecie dotknięcie wraca do całego kadru. Powiększone zdjęcie przesuwasz
-palcem.
+### Dla administratora
 
-### Skróty klawiszowe
+- postęp oceniania każdej osoby;
+- ranking zdjęć według aktualnej średniej;
+- oceny poszczególnych członków rodziny w jednej tabeli;
+- filtrowanie wyników według minimalnej liczby głosów;
+- raport ulubionych wraz z informacją, kto wybrał dane zdjęcie;
+- kopiowanie samych nazw plików oraz eksport CSV;
+- możliwość ustawienia nowego hasła dowolnej osobie lokalnym skryptem.
 
-| Klawisz | Działanie |
-|---|---|
-| `1` - `5` | ocena |
-| `←` `→` | poprzednie / następne zdjęcie |
-| `F` | ulubione |
-| `L` | lupka |
-| `Esc` | zamknięcie podglądu |
+## Projekt doświadczenia
 
-Hasło zmienisz w menu pod swoim imieniem.
+Frame jest narzędziem dla małej, znanej grupy — także dla osób nietechnicznych i starszych.
+Dlatego interfejs korzysta ze znanych wzorców, prostego języka i dużych celów dotykowych.
+Zdjęcia pozostają wizualnie najważniejsze, a elementy sterujące używają jednego, spokojnego
+akcentu kolorystycznego.
 
----
+Aplikacja obsługuje klawiaturę, widoczny fokus, preferencję ograniczonego ruchu oraz układ od
+telefonu 360 px do dużego monitora. Komunikaty błędów i stan braku internetu wskazują, co
+użytkownik może zrobić dalej.
 
-## Dla admina
+Szczegółowe zasady produktu znajdują się w [PRODUCT.md](PRODUCT.md), a pierwotne decyzje
+architektoniczne w [specyfikacji projektu](docs/specs/2026-08-04-frame-design.md).
 
-### Struktura projektu
+## Architektura
 
+Frontend jest statyczną aplikacją React publikowaną na GitHub Pages. Logowanie i wspólne dane
+zapewnia Firebase, dzięki czemu projekt nie wymaga własnego serwera.
+
+```mermaid
+flowchart LR
+    U["Rodzina w przeglądarce"] --> P["GitHub Pages — frontend"]
+    P --> A["Firebase Auth — logowanie"]
+    P --> D["Cloud Firestore — oceny, komentarze i ulubione"]
+    P --> S["Firebase Storage — zdjęcia"]
+    M["Komputer administratora"] --> D
+    M --> S
 ```
-_source/       zdjęcia źródłowe (poza gitem) - tutaj wrzucasz pliki z sesji
-_processed/    wynik przetwarzania (poza gitem) - miniatury, wersje pełne, mapping.csv
-docs/specs/    specyfikacja projektowa
-scripts/       narzędzia administracyjne uruchamiane lokalnie
-src/           kod aplikacji
+
+- **Frontend:** React, TypeScript, Vite i CSS Modules.
+- **Usługi:** Firebase Authentication, Cloud Firestore i Firebase Storage.
+- **Hosting:** GitHub Pages z automatycznym buildem w GitHub Actions.
+- **Nawigacja:** hash routing zgodny ze statycznym hostingiem w podkatalogu.
+
+Zdjęcia nie trafiają do publicznego repozytorium. Manifest z ich adresami jest dostępny dopiero
+po zalogowaniu, a reguły Firestore ograniczają zapis ocen i ulubionych do ich właściciela.
+
+## Uruchomienie lokalne
+
+Wymagane są Node.js i npm. Konfiguracja klienta Firebase znajduje się już w repozytorium — jak
+w każdej aplikacji webowej nie jest tajnym kluczem; dostęp do danych kontrolują reguły Firebase.
+
+```powershell
+git clone https://github.com/DominDev/DominDev-Frame.git
+Set-Location DominDev-Frame
+npm ci
+npm run dev
 ```
 
-### Przygotowanie i wysłanie zdjęć
+Vite pokaże lokalny adres aplikacji. Wariant odpowiadający produkcji uruchomisz tak:
 
-```bash
+```powershell
+npm run build
+npm run preview -- --host 127.0.0.1
+```
+
+Następnie otwórz `http://127.0.0.1:4173/DominDev-Frame/`.
+
+## Kontrola jakości
+
+```powershell
+npm run typecheck
+npm test
+npm audit --omit=dev --audit-level=moderate
+npm run build
+```
+
+Workflow publikacyjny wykonuje te same kontrole przy każdym pushu do `main`, a dopiero potem
+wdraża artefakt na GitHub Pages.
+
+## Obsługa zdjęć i kont
+
+Skrypty administracyjne wymagają pliku konta usługi w
+`%USERPROFILE%\.frame\service-account.json`. Plik pozostaje poza repozytorium.
+
+```powershell
+# Przygotowanie miniatur i wersji pełnych z plików umieszczonych w _source/
 npm run photos:prepare
+
+# Wysłanie zdjęć do Storage i zapis manifestu
 npm run photos:upload
-```
 
-Pierwsza komenda czyta `_source/`, tworzy miniatury i skompresowane wersje webp,
-usuwa EXIF i zapisuje `_processed/mapping.csv` z parami nazwa pliku > ścieżka źródłowa.
-Druga wysyła pliki do Firebase Storage i zapisuje manifest w bazie.
+# Lista kont
+npm run user:password -- --list
 
-### Zmiana hasła użytkownikowi
-
-```bash
+# Ustawienie nowego hasła
 npm run user:password -- <adres-email> <nowe-haslo>
+
+# Kontrola konfiguracji i reguł Firebase
+npm run verify:firebase
+npm run rules:verify
 ```
 
-Działa natychmiast i nie wymusza zmiany przy kolejnym logowaniu. Listę kont pokaże
-`npm run user:password -- --list`.
+Katalogi `_source/` i `_processed/`, zdjęcia, hasła oraz klucz konta usługi są wykluczone z
+repozytorium.
 
-### Wszystkie polecenia
+## Struktura projektu
 
-| Polecenie | Do czego |
-|---|---|
-| `npm run dev` | serwer deweloperski |
-| `npm run build` | build produkcyjny (CI robi to sam przy każdym push) |
-| `npm test` | testy podglądu, filtrów, raportów CSV i haseł |
-| `npm run typecheck` | kontrola typów |
-| `npm run photos:prepare` | przetworzenie `_source/` na warianty webp |
-| `npm run photos:upload` | wysyłka do Storage i zapis manifestu |
-| `npm run user:password` | zmiana hasła dowolnej osobie |
-| `npm run rules:deploy` | wgranie reguł bezpieczeństwa z walidacją składni |
-| `npm run rules:verify` | 21 kontroli reguł na żywym projekcie |
-| `npm run verify:firebase` | region bucketu, dostępność bazy, komplet kont |
+```text
+.github/workflows/   automatyczny build i publikacja
+docs/specs/          specyfikacja i decyzje architektoniczne
+scripts/             zdjęcia, konta, Firebase i testy
+src/components/      interfejs pogrupowany według funkcji
+src/hooks/           stan aplikacji i synchronizacja danych
+src/lib/             logika domenowa i integracje
+src/styles/          globalne style i tokeny wizualne
+```
 
-Wszystkie skrypty administracyjne wymagają klucza konta usługi w
-`%USERPROFILE%\.frame\service-account.json`. Klucz nigdy nie trafia do repozytorium -
-`.gitignore` wyklucza także nazwę, którą nadaje mu konsola Firebase przy pobieraniu.
+## Publikacja
 
-### Materiał źródłowy
+Push do `main` uruchamia workflow **Publikacja na GitHub Pages**. Po przejściu kontroli typów,
+testów, audytu zależności i buildu nowa wersja zostaje udostępniona pod adresem:
 
-Pliki w `_source/` to zrzuty ekranu galerii, w których sama fotografia zajmuje od 27 %
-(kadr pionowy) do 51 % (kadr poziomy) powierzchni. Gdyby kiedyś udało się zdobyć
-oryginalne pliki zamiast zrzutów, wystarczy podmienić zawartość `_source/` i uruchomić
-oba polecenia `photos:*`. Oceny i komentarze przetrwają, bo identyfikator zdjęcia
-bierze się z nazwy pliku.
-
-### Raporty
-
-Panel admina w aplikacji udostępnia raport ocen (posortowany po średniej, z eksportem CSV
-i kopiowaniem samej listy nazw plików) oraz raport ulubionych z informacją, kto co wybrał.
-
----
-
-## Stack
-
-Vite + React + TypeScript, Firebase (Auth, Firestore, Storage), hosting na GitHub Pages.
-Szczegóły architektury i uzasadnienie decyzji: [docs/specs](docs/specs/2026-08-04-frame-design.md).
+**https://domindev.github.io/DominDev-Frame/**
