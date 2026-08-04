@@ -46,8 +46,12 @@ try {
     ok(`region ${meta.location} objety Always Free`);
   }
 
-  if (String(meta.storageClass).toUpperCase() !== 'STANDARD') {
-    warn(`klasa ${meta.storageClass} zamiast STANDARD - darmowy prog dotyczy STANDARD`);
+  // REGIONAL to starsza nazwa klasy Standard dla bucketu w pojedynczym regionie.
+  // Google rozlicza obie identycznie, a konsola Firebase pokazuje przy takim
+  // buckecie "Access frequency: Standard" i etykietę "No cost location".
+  const STANDARD_EQUIVALENT = ['STANDARD', 'REGIONAL'];
+  if (!STANDARD_EQUIVALENT.includes(String(meta.storageClass).toUpperCase())) {
+    warn(`klasa ${meta.storageClass} nie jest rownowazna Standard - darmowy prog jej nie obejmuje`);
   }
 } catch (err) {
   fail(`nie udalo sie odczytac bucketu: ${err.message}`);
