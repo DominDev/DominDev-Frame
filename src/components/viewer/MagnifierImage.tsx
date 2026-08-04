@@ -10,7 +10,18 @@ interface Props {
   hoverLens: boolean;
 }
 
-const LENS_SIZE = 200;
+const LENS_SIZE = 260;
+
+/**
+ * Stopnie powiększenia soczewki, jako mnożnik skali 1:1 wobec pliku.
+ *
+ * Materiałem są zrzuty ekranu galerii, w których sama fotografia zajmuje
+ * około 690 px szerokości przy pionowym kadrze. Skala 1:1 daje przy takim
+ * źródle ledwie półtorakrotne powiększenie, więc same stopnie 1x są tu za mało
+ * użyteczne. Wyższe nie dokładają detalu - powiększają to, co jest.
+ */
+const LENS_LEVELS = [1, 2, 3];
+const LENS_KEY = 'frame:lensLevel';
 
 /**
  * Stopnie powiększenia jako mnożnik skali 1:1 wobec pikseli urządzenia.
@@ -49,6 +60,14 @@ export function MagnifierImage({ src, alt, width, height, hoverLens }: Props) {
   const [lens, setLens] = useState<{ x: number; y: number; bgX: number; bgY: number } | null>(null);
   /** 0 = dopasowane do ekranu, dalej kolejne pozycje z ZOOM_STEPS. */
   const [step, setStep] = useState(0);
+
+  // Soczewka domyślnie wyłączona: pojawiając się przy każdym ruchu myszy,
+  // zasłaniała zdjęcie właśnie wtedy, gdy chciało się je obejrzeć w całości.
+  // Ustawienie przeżywa przejście do kolejnego zdjęcia i odświeżenie strony.
+  const [lensLevel, setLensLevel] = useState(() => Number(localStorage.getItem(LENS_KEY) ?? 0));
+  useEffect(() => {
+    localStorage.setItem(LENS_KEY, String(lensLevel));
+  }, [lensLevel]);
 
   // Zmiana zdjęcia wraca do widoku dopasowanego - inaczej kolejne zdjęcie
   // otwierałoby się przewinięte w losowe miejsce.
@@ -131,7 +150,7 @@ export function MagnifierImage({ src, alt, width, height, hoverLens }: Props) {
 
   function onMove(e: MouseEvent<HTMLDivElement>) {
     const img = imgRef.current;
-    if (!img || !hoverLens || step > 0) return;
+    if (!img || !hoverLens || step > 0 || lensLevel === 0) return;
 
     const rect = img.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -142,13 +161,9 @@ export function MagnifierImage({ src, alt, width, height, hoverLens }: Props) {
       return;
     }
 
-    // Ile pikseli pliku przypada na piksel ekranu. Poniżej 1 obraz jest już
-    // wyświetlany w powiększeniu i soczewka nie miałaby czego dołożyć.
-    const scale = img.naturalWidth / rect.width;
-    if (scale <= 1.05) {
-      setLens(null);
-      return;
-    }
+    // Ile pikseli pliku przypada na piksel ekranu, przemnożone przez wybrany
+    // stopień powiększenia soczewki.
+    const scale = (img.naturalWidth / rect.width) * LENS_LEVELS[lensLevel - 1];
 
     setLens({
       x,
@@ -157,6 +172,26 @@ export function MagnifierImage({ src, alt, width, height, hoverLens }: Props) {
       bgY: -(y * scale - LENS_SIZE / 2),
     });
   }
+
+  const cycleLens = () => {
+    setLensLevel((v) => (v + 1) % (LENS_LEVELS.length + 1));
+    setLens(null);
+  };
+
+  // Skrót klawiszowy, żeby nie trzeba było celować w przycisk przy każdym zdjęciu.
+  useEffect(() => {
+    if (!hoverLens) return;
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement | null;
+      if (t && /^(INPUT|TEXTAREA)$/.test(t.tagName)) return;
+      if (e.key.toLowerCase() === 'l') {
+        e.preventDefault();
+        cycleLens();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [hoverLens]);
 
   const zoomed = step > 0;
   const zoomWidth = zoomed ? nativeCssWidth() * ZOOM_STEPS[step - 1] : undefined;
@@ -167,7 +202,9 @@ export function MagnifierImage({ src, alt, width, height, hoverLens }: Props) {
   const hint = zoomed
     ? `Powiększenie ${step} z ${ZOOM_STEPS.length}. Przesuwaj palcem, dotknij dwukrotnie żeby zmienić.`
     : hoverLens
-      ? 'Najedź kursorem, żeby powiększyć fragment'
+      ? lensLevel > 0
+        ? `Lupka ${LENS_LEVELS[lensLevel - 1]}x podąża za kursorem. Klawisz L zmienia powiększenie.`
+        : 'Włącz lupkę przyciskiem albo klawiszem L. Podwójne kliknięcie powiększa całe zdjęcie.'
       : 'Dotknij dwukrotnie w miejscu, które chcesz obejrzeć z bliska';
 
   return (
@@ -202,8 +239,12 @@ export function MagnifierImage({ src, alt, width, height, hoverLens }: Props) {
               width: LENS_SIZE,
               height: LENS_SIZE,
               backgroundImage: `url("${src}")`,
-              // Rozmiar tła równy naturalnym wymiarom pliku daje skalę 1:1.
-              backgroundSize: `${imgRef.current?.naturalWidth ?? width}px ${imgRef.current?.naturalHeight ?? height}px`,
+              // Tło w naturalnych wymiarach pliku daje skalę 1:1; mnożnik
+              // wybranego stopnia powiększa je dalej.
+              backgroundSize: (() => {
+                const f = LENS_LEVELS[Math.max(0, lensLevel - 1)];
+                return `${(imgRef.current?.naturalWidth ?? width) * f}px ${(imgRef.current?.naturalHeight ?? height) * f}px`;
+              })(),
               backgroundPosition: `${lens.bgX}px ${lens.bgY}px`,
             }}
           />
@@ -211,6 +252,18 @@ export function MagnifierImage({ src, alt, width, height, hoverLens }: Props) {
       </div>
 
       <div className={styles.controls}>
+        {hoverLens && (
+          <button
+            type="button"
+            className={lensLevel > 0 ? styles.zoomToggle : styles.zoomReset}
+            onClick={cycleLens}
+            aria-pressed={lensLevel > 0}
+            title="Klawisz L"
+          >
+            {lensLevel === 0 ? 'Lupka' : `Lupka ${LENS_LEVELS[lensLevel - 1]}x`}
+          </button>
+        )}
+
         <button
           type="button"
           className={styles.zoomToggle}
