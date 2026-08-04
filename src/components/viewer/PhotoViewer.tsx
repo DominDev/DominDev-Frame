@@ -59,7 +59,15 @@ export function PhotoViewer({
 
   useEffect(() => {
     const dialog = ref.current;
-    if (dialog && !dialog.open) dialog.showModal();
+    if (!dialog) return;
+    if (!dialog.open) dialog.showModal();
+
+    // Zamknięcie przed odmontowaniem: przeglądarka zdejmuje dialog z warstwy
+    // wierzchniej sama, ale zostawianie odpiętego elementu w stanie "otwarty"
+    // to proszenie się o kłopoty przy kolejnych zmianach.
+    return () => {
+      if (dialog.open) dialog.close();
+    };
   }, []);
 
   // Pobranie kilku kolejnych zdjęć z wyprzedzeniem. Bucket stoi w Iowa, więc bez

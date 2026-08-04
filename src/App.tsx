@@ -5,6 +5,7 @@ import { useAppData } from './hooks/useAppData';
 import { useRoute } from './hooks/useRoute';
 import { useIsWide } from './hooks/useMediaQuery';
 import { ratedCount, selectPhotos, type Tab } from './lib/stats';
+import { resolveViewer } from './lib/viewer';
 import { LoginForm } from './components/auth/LoginForm';
 import { AppHeader } from './components/layout/AppHeader';
 import { FilterBar } from './components/gallery/FilterBar';
@@ -54,15 +55,25 @@ export default function App() {
     [data.photos, data.myRatings, data.myFavorites, data.commentCounts]
   );
 
-  // Podgląd pracuje na liście zamrożonej w chwili otwarcia. Bez tego ocenienie
-  // zdjęcia w zakładce "nieocenione" wyrzucałoby je z listy pod stopami
-  // użytkownika i przeskakiwało gdzie indziej.
+  // Podgląd pracuje na liście zamrożonej w chwili otwarcia, żeby ocenienie
+  // zdjęcia w zakładce "nieocenione" nie wyrzucało go z listy pod stopami
+  // użytkownika. Reguły tego zamrażania siedzą w `resolveViewer`, bo mają
+  // testy - potrafią zablokować aplikację na trwałe.
   const frozen = useRef<Photo[] | null>(null);
-  if (route.photoId && frozen.current === null) frozen.current = selected;
-  if (!route.photoId && frozen.current !== null) frozen.current = null;
+  const viewer = resolveViewer({
+    photoId: route.photoId,
+    frozen: frozen.current,
+    selected,
+    all: data.photos,
+  });
+  frozen.current = viewer.freeze;
 
-  const viewerPhotos = frozen.current ?? selected;
-  const viewerIndex = route.photoId ? viewerPhotos.findIndex((p) => p.id === route.photoId) : -1;
+  // Adres wskazujący na nieistniejące zdjęcie zostawiłby aplikację w stanie,
+  // z którego użytkownik nie ma jak wyjść klikaniem. Czyścimy go sami.
+  const { closePhoto } = route;
+  useEffect(() => {
+    if (viewer.stale) closePhoto();
+  }, [viewer.stale, closePhoto]);
 
   const firstUnrated = useMemo(
     () => data.photos.find((p) => data.myRatings[p.id] === undefined),
@@ -87,10 +98,9 @@ export default function App() {
         total={data.photos.length}
         onJumpToUnrated={
           firstUnrated
-            ? () => {
-                route.setFilters({ ...route.filters, tab: 'unrated' });
-                route.openPhoto(firstUnrated.id);
-              }
+            ? // Filtry i otwarcie zdjęcia w jednym przejściu. Dwa osobne wywołania
+              // nadpisywałyby się nawzajem, bo drugie budowało adres ze starych filtrów.
+              () => route.openPhoto(firstUnrated.id, { ...route.filters, tab: 'unrated' })
             : null
         }
         onGoTo={route.goTo}
@@ -139,10 +149,10 @@ export default function App() {
         )}
       </main>
 
-      {viewerIndex >= 0 && (
+      {viewer.index >= 0 && (
         <PhotoViewer
-          photos={viewerPhotos}
-          index={viewerIndex}
+          photos={viewer.photos}
+          index={viewer.index}
           myRatings={data.myRatings}
           myFavorites={data.myFavorites}
           stats={data.stats}
@@ -151,7 +161,7 @@ export default function App() {
           admin={auth.admin}
           revealAverage={revealAverages}
           onClose={route.closePhoto}
-          onNavigate={(i) => route.openPhoto(viewerPhotos[i].id)}
+          onNavigate={(i) => route.openPhoto(viewer.photos[i].id)}
           onRate={data.rate}
           onToggleFavorite={data.toggleFavorite}
           onAddComment={data.comment.add}

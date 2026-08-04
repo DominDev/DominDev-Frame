@@ -14,7 +14,7 @@
  *   #/?tab=unrated&sort=avg         galeria z filtrami
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   DEFAULT_FILTERS,
   type AvgFilter,
@@ -80,13 +80,21 @@ function build(route: Route): string {
 
 export interface RouteApi extends Route {
   setFilters: (filters: Filters) => void;
-  openPhoto: (photoId: string) => void;
+  /** Filtry można zmienić razem z otwarciem zdjęcia - jednym wpisem do historii. */
+  openPhoto: (photoId: string, filters?: Filters) => void;
   closePhoto: () => void;
   goTo: (view: 'gallery' | 'admin') => void;
 }
 
 export function useRoute(): RouteApi {
   const [route, setRoute] = useState<Route>(() => parse(window.location.hash));
+
+  // Bieżąca trasa w referencji, żeby funkcje nawigacyjne mogły mieć stabilną
+  // tożsamość. Gdyby powstawały na nowo przy każdym renderowaniu, memoizacja
+  // sześciuset kafelków przestałaby cokolwiek dawać, a efekty zależne od tych
+  // funkcji uruchamiałyby się bez przerwy.
+  const routeRef = useRef(route);
+  routeRef.current = route;
 
   useEffect(() => {
     const onChange = () => setRoute(parse(window.location.hash));
@@ -108,11 +116,27 @@ export function useRoute(): RouteApi {
     }
   }, []);
 
-  return {
-    ...route,
-    setFilters: (filters) => navigate({ ...route, filters }, true),
-    openPhoto: (photoId) => navigate({ ...route, photoId }, false),
-    closePhoto: () => navigate({ ...route, photoId: null }, false),
-    goTo: (view) => navigate({ ...route, view, photoId: null }, false),
-  };
+  const setFilters = useCallback(
+    (filters: Filters) => navigate({ ...routeRef.current, filters }, true),
+    [navigate]
+  );
+
+  const openPhoto = useCallback(
+    (photoId: string, filters?: Filters) =>
+      navigate({ ...routeRef.current, photoId, filters: filters ?? routeRef.current.filters }, false),
+    [navigate]
+  );
+
+  const closePhoto = useCallback(
+    () => navigate({ ...routeRef.current, photoId: null }, false),
+    [navigate]
+  );
+
+  const goTo = useCallback(
+    (view: 'gallery' | 'admin') =>
+      navigate({ ...routeRef.current, view, photoId: null }, false),
+    [navigate]
+  );
+
+  return { ...route, setFilters, openPhoto, closePhoto, goTo };
 }
