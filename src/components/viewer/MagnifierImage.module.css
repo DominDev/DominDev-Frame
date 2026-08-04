@@ -53,11 +53,17 @@
 
 /* --- Sterowanie ---------------------------------------------------------- */
 
-.zoomToggle {
+.controls {
   position: absolute;
   top: var(--space-2);
   left: var(--space-2);
   z-index: 3;
+  display: flex;
+  gap: var(--space-2);
+}
+
+.zoomToggle,
+.zoomReset {
   min-height: var(--touch-target);
   padding: 0 var(--space-4);
   font-size: var(--text-sm);
@@ -69,8 +75,17 @@
   backdrop-filter: blur(4px);
 }
 
-.zoomToggle:hover {
+.zoomToggle:hover,
+.zoomReset:hover {
   background: rgb(0 0 0 / 75%);
+}
+
+/* Wyjście z powiększenia jest akcją wtórną - nie ma konkurować wagą
+   z przyciskiem, który powiększa dalej. */
+.zoomReset {
+  font-weight: 500;
+  color: var(--text-faint);
+  background: rgb(0 0 0 / 40%);
 }
 
 .hint {
