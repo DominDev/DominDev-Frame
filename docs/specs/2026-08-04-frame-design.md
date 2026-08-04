@@ -177,6 +177,11 @@ photos/full/{id}.webp
 
 ### Firestore
 
+**Identyfikator bazy: `frame-db`**, a nie `(default)`. Baza została utworzona jako nazwana,
+co ma dwie konsekwencje w kodzie: klient inicjalizuje ją przez `getFirestore(app, 'frame-db')`,
+a wgrywanie reguł wymaga wskazania bazy w `firebase.json`. Darmowy próg przysługuje pierwszej
+bazie w projekcie, więc obejmuje tę. Poza tym zachowuje się identycznie jak domyślna.
+
 | Kolekcja | Dokument | Zawartość | Odczyt | Zapis |
 |---|---|---|---|---|
 | `manifest` | `chunk-000..002` | tablica `{ id, name, w, h, tThumb, tFull }`, po 250 zdjęć | zalogowani | tylko skrypt admina |
@@ -284,8 +289,10 @@ Kontrast tekstu powyżej 4,5:1, widoczny focus, pełna obsługa klawiaturą.
 ## 8. Stack i struktura plików
 
 Vite + React + TypeScript. Firebase JS SDK w aktualnej stabilnej wersji z dnia implementacji,
-zamrożonej w `package-lock.json`, importowany modularnie (tylko `auth`, `firestore`, `storage`).
-CSS Modules z plikiem tokenów. Bez routera: trzy widoki na stanie i hashu.
+zamrożonej w `package-lock.json`, importowany modularnie: **tylko `auth` i `firestore`**.
+Front nie potrzebuje `firebase/storage`, bo zdjęcia ładują się zwykłym `<img src>` z adresów
+tokenowych zapisanych w manifeście; ze Storage rozmawiają wyłącznie skrypty administracyjne
+przez Admin SDK. CSS Modules z plikiem tokenów. Bez routera: trzy widoki na stanie i hashu.
 
 ```
 DominDev-Frame/
