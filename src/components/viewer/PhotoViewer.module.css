@@ -74,13 +74,6 @@
   right: var(--space-2);
 }
 
-.lensHint {
-  position: absolute;
-  bottom: var(--space-3);
-  font-size: var(--text-xs);
-  color: var(--text-faint);
-}
-
 /* --- Panel --------------------------------------------------------------- */
 
 .panel {

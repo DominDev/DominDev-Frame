@@ -1,9 +1,18 @@
 .root {
   position: relative;
   display: grid;
-  place-items: center;
+  grid-template-rows: 1fr auto;
+  gap: var(--space-2);
   width: 100%;
   height: 100%;
+  min-height: 0;
+}
+
+.viewport {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 0;
   overflow: hidden;
 }
 
@@ -15,6 +24,20 @@
   object-fit: contain;
 }
 
+/* --- Tryb powiększenia --------------------------------------------------- */
+
+.zoomed {
+  place-items: start;
+  overflow: auto;
+  cursor: grab;
+
+  /* Przesuwanie palcem w obu osiach zamiast przewijania całej strony. */
+  touch-action: pan-x pan-y;
+  overscroll-behavior: contain;
+}
+
+/* --- Soczewka ------------------------------------------------------------ */
+
 .lens {
   position: absolute;
   pointer-events: none;
@@ -25,11 +48,33 @@
     0 6px 24px rgb(0 0 0 / 45%);
   background-repeat: no-repeat;
   background-color: var(--viewer-bg);
-
-  /* Środek soczewki podąża dokładnie za kursorem. */
   transform: translate(-50%, -50%);
+}
 
-  /* Bez tego przeglądarka wygładziłaby podgląd i lupka pokazywałaby
-     rozmycie interpolacji zamiast faktycznej ostrości zdjęcia. */
-  image-rendering: auto;
+/* --- Sterowanie ---------------------------------------------------------- */
+
+.zoomToggle {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 3;
+  min-height: var(--touch-target);
+  padding: 0 var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-on-dark);
+  background: rgb(0 0 0 / 55%);
+  border: 1px solid rgb(255 255 255 / 22%);
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+
+.zoomToggle:hover {
+  background: rgb(0 0 0 / 75%);
+}
+
+.hint {
+  font-size: var(--text-xs);
+  color: var(--text-faint);
+  text-align: center;
 }

@@ -125,7 +125,7 @@ export function PhotoViewer({
             alt={`Zdjęcie ${photo.name}`}
             width={photo.w}
             height={photo.h}
-            enabled={wide}
+            hoverLens={wide}
           />
 
           <button
@@ -138,8 +138,6 @@ export function PhotoViewer({
             <span aria-hidden="true">›</span>
             <span className="visuallyHidden">Następne zdjęcie</span>
           </button>
-
-          {wide && <p className={styles.lensHint}>Najedź kursorem, żeby powiększyć fragment</p>}
         </div>
 
         <ViewerPanel
