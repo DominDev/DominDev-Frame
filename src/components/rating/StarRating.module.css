@@ -1,0 +1,58 @@
+.root {
+  display: inline-flex;
+  gap: 2px;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+.item {
+  display: inline-flex;
+}
+
+.star {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: var(--border-strong);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: color 0.12s ease, transform 0.12s ease;
+}
+
+.star:hover {
+  color: var(--accent-hover);
+  transform: scale(1.12);
+}
+
+.on {
+  color: var(--accent);
+}
+
+.icon {
+  width: 100%;
+  height: 100%;
+}
+
+/* Pole radio jest ukryte wizualnie, więc obwódka focusu musi trafić na etykietę. */
+input:focus-visible + .star {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 1px;
+}
+
+/* Wariant do podglądu pełnoekranowego: cele dotykowe powyżej 44 px. */
+.large .star {
+  width: var(--touch-target);
+  height: var(--touch-target);
+  color: #55555c;
+}
+
+.large .star:hover {
+  color: var(--accent);
+}
+
+.large .on {
+  color: var(--accent);
+}

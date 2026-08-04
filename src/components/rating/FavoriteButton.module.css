@@ -1,0 +1,42 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  color: var(--border-strong);
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  transition: color 0.12s ease, transform 0.12s ease;
+}
+
+.root:hover {
+  color: var(--favorite);
+  transform: scale(1.12);
+}
+
+.active {
+  color: var(--favorite);
+}
+
+.icon {
+  width: 22px;
+  height: 22px;
+}
+
+.large {
+  width: var(--touch-target);
+  height: var(--touch-target);
+  color: #6a6a72;
+}
+
+.large.active {
+  color: var(--favorite);
+}
+
+.large .icon {
+  width: 26px;
+  height: 26px;
+}

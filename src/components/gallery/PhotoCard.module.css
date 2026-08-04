@@ -1,0 +1,98 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+
+  /* Przeglądarka pomija rysowanie kafelków poza ekranem, ale zna ich rozmiar,
+     więc pasek przewijania nie skacze. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 320px;
+}
+
+.imageButton {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  background: var(--surface-sunken);
+  border: none;
+  cursor: zoom-in;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 5 / 3;
+  object-fit: cover;
+}
+
+/* Plakietka z własną oceną - wariant dla wąskich ekranów, gdzie nie ma gwiazdek. */
+.myBadge {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  padding: 2px var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-on-accent);
+  background: rgb(0 0 0 / 62%);
+  border-radius: 999px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3) var(--space-3);
+}
+
+.nameRow {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Nazwa pliku monospace: to identyfikator, który trafia do raportu i po którym
+   admin szuka oryginału na dysku. */
+.name {
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meta {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  min-height: 1.5rem;
+  font-size: var(--text-sm);
+}
+
+.avg strong {
+  font-size: var(--text-base);
+}
+
+.votes,
+.noVotes,
+.hidden {
+  color: var(--text-faint);
+}
+
+.hidden {
+  font-style: italic;
+  cursor: help;
+}
+
+.comments {
+  margin-left: auto;
+  color: var(--text-muted);
+  white-space: nowrap;
+}

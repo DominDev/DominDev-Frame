@@ -30,6 +30,9 @@ const firebaseConfig = {
  */
 export const DATABASE_ID = 'frame-db';
 
+/** Nazwa bucketu, z której budowane są adresy zdjęć w `lib/photos.ts`. */
+export const STORAGE_BUCKET = firebaseConfig.storageBucket;
+
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app, DATABASE_ID);
