@@ -227,8 +227,8 @@ Rola w tej mapie służy wyłącznie do decyzji, co narysować. Uprawnienia egze
 - Tryb skupienia: jedno zdjęcie na pełnym ekranie, ocena klawiszami `1`-`5`, nawigacja
   strzałkami lub gestem, `F` ulubione, `C` komentarz, `Esc` wyjście, prefetch trzech
   kolejnych zdjęć.
-- Lupka: okrągła soczewka około 180 px podążająca za kursorem, powiększenie 2,5x z pliku
-  pełnej rozdzielczości. Na telefonie zamiast lupki dwuklik i pinch-zoom.
+- Lupa: okrągła soczewka podążająca za kursorem, powiększenie 2× z pliku
+  pełnej rozdzielczości. Na telefonie zamiast lupy działa dwuklik i przewijanie palcem.
 - Ocena 1-5 z opisami: 1 odrzucam, 2 raczej nie, 3 możliwe, 4 bardzo dobre,
   5 koniecznie wybierz. Zmienialna w każdej chwili, z cofnięciem do "brak oceny".
 - Średnia zasłonięta do momentu oddania własnego głosu, potem widoczna na stałe razem

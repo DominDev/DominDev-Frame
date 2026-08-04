@@ -85,6 +85,10 @@ export function PhotoViewer({
       const target = e.target as HTMLElement | null;
       if (target && /^(INPUT|TEXTAREA)$/.test(target.tagName)) return;
 
+      // Gdy fokus jest na powiększonym zdjęciu, strzałki przewijają jego kadr.
+      // Nie wolno wtedy przechwycić ich jako nawigacji do innego zdjęcia.
+      if (target?.closest('[data-photo-scroll-region]') && e.key.startsWith('Arrow')) return;
+
       if (e.key === 'ArrowRight' && index < photos.length - 1) {
         e.preventDefault();
         onNavigate(index + 1);

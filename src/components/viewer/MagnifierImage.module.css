@@ -29,7 +29,6 @@
 .zoomed {
   place-items: start;
   overflow: auto;
-  cursor: grab;
 
   /* Przesuwanie palcem w obu osiach zamiast przewijania całej strony. */
   touch-action: pan-x pan-y;
@@ -64,6 +63,10 @@
 
 .zoomToggle,
 .zoomReset {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
   min-height: var(--touch-target);
   padding: 0 var(--space-4);
   font-size: var(--text-sm);
@@ -75,16 +78,20 @@
   backdrop-filter: blur(4px);
 }
 
+.controlIcon {
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
 .zoomToggle:hover,
 .zoomReset:hover {
   background: rgb(0 0 0 / 75%);
 }
 
-/* Wyjście z powiększenia jest akcją wtórną - nie ma konkurować wagą
-   z przyciskiem, który powiększa dalej. */
+/* Wyjście z powiększenia jest akcją wtórną, ale nie może wyglądać na wyłączone. */
 .zoomReset {
   font-weight: 500;
-  color: var(--text-on-dark-muted);
   background: rgb(0 0 0 / 40%);
 }
 

@@ -51,7 +51,7 @@ export function HelpDialog({ open, onClose }: Props) {
           </p>
           <p>
             <strong>Komputer:</strong> klawisze 1–5 oceniają, strzałki zmieniają zdjęcie, a L
-            włącza lupkę.
+            włącza lub wyłącza lupę.
           </p>
           <p>
             <strong>Telefon:</strong> dotknij zdjęcia dwukrotnie, żeby je powiększyć.
