@@ -23,13 +23,14 @@
   /* Tekst */
   --text: #1c1c1e;
   --text-muted: #66666c;
-  --text-faint: #8e8e94;
+  --text-faint: #6f6f75;
   --text-on-dark: #f2f2f3;
+  --text-on-dark-muted: #a6a6ac;
   --text-on-accent: #ffffff;
 
   /* Akcenty */
-  --accent: #c47d1e;
-  --accent-hover: #a86612;
+  --accent: #a86612;
+  --accent-hover: #8b550e;
   --accent-soft: #fdf4e6;
   --favorite: #c0392b;
   --favorite-soft: #fbeae8;

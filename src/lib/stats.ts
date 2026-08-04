@@ -6,7 +6,7 @@
  */
 
 import type { Comment, Photo, Rating, RatingsByUser } from '../types';
-import { compareNames } from './sort';
+import { compareNames } from './sort.ts';
 
 export interface PhotoStats {
   /** Suma ocen. */

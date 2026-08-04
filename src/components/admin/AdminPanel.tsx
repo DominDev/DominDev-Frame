@@ -10,8 +10,6 @@ interface Props {
   ratings: RatingsByUser;
   favorites: FavoritesByUser;
   stats: Map<string, PhotoStats>;
-  revealAverages: boolean;
-  onToggleReveal: (value: boolean) => void;
 }
 
 export function AdminPanel({
@@ -19,21 +17,11 @@ export function AdminPanel({
   ratings,
   favorites,
   stats,
-  revealAverages,
-  onToggleReveal,
 }: Props) {
   return (
     <div className={styles.root}>
       <div className={styles.intro}>
         <h1 className={styles.pageTitle}>Raporty</h1>
-        <label className={styles.inlineLabel}>
-          <input
-            type="checkbox"
-            checked={revealAverages}
-            onChange={(e) => onToggleReveal(e.target.checked)}
-          />
-          Pokazuj wszystkie średnie w galerii, także przy nieocenionych przeze mnie
-        </label>
       </div>
 
       <ProgressReport ratings={ratings} total={photos.length} />

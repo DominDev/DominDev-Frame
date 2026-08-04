@@ -40,14 +40,21 @@ export async function fetchManifest(): Promise<Photo[]> {
 
 // --- Oceny -----------------------------------------------------------------
 
-export function subscribeRatings(onChange: (r: RatingsByUser) => void): () => void {
-  return onSnapshot(collection(db, 'ratings'), (snap) => {
-    const out: RatingsByUser = {};
-    snap.forEach((d) => {
-      out[d.id] = d.data() as Record<string, Rating>;
-    });
-    onChange(out);
-  });
+export function subscribeRatings(
+  onChange: (r: RatingsByUser) => void,
+  onError?: (error: Error) => void
+): () => void {
+  return onSnapshot(
+    collection(db, 'ratings'),
+    (snap) => {
+      const out: RatingsByUser = {};
+      snap.forEach((d) => {
+        out[d.id] = d.data() as Record<string, Rating>;
+      });
+      onChange(out);
+    },
+    (error) => onError?.(error)
+  );
 }
 
 /**
@@ -69,25 +76,37 @@ export function setRating(uid: string, photoId: string, value: Rating | null): P
 /** Zwykły użytkownik czyta wyłącznie własny dokument - tak samo jak pozwalają reguły. */
 export function subscribeMyFavorites(
   uid: string,
-  onChange: (f: Record<string, true>) => void
+  onChange: (f: Record<string, true>) => void,
+  onError?: (error: Error) => void
 ): () => void {
-  return onSnapshot(doc(db, 'favorites', uid), (snap) => {
-    onChange((snap.data() ?? {}) as Record<string, true>);
-  });
+  return onSnapshot(
+    doc(db, 'favorites', uid),
+    (snap) => {
+      onChange((snap.data() ?? {}) as Record<string, true>);
+    },
+    (error) => onError?.(error)
+  );
 }
 
 /**
  * Admin czyta wszystkie dokumenty. Zapytanie o całą kolekcję przechodzi tylko
  * dlatego, że dla admina reguła jest prawdziwa niezależnie od dokumentu.
  */
-export function subscribeAllFavorites(onChange: (f: FavoritesByUser) => void): () => void {
-  return onSnapshot(collection(db, 'favorites'), (snap) => {
-    const out: FavoritesByUser = {};
-    snap.forEach((d) => {
-      out[d.id] = d.data() as Record<string, true>;
-    });
-    onChange(out);
-  });
+export function subscribeAllFavorites(
+  onChange: (f: FavoritesByUser) => void,
+  onError?: (error: Error) => void
+): () => void {
+  return onSnapshot(
+    collection(db, 'favorites'),
+    (snap) => {
+      const out: FavoritesByUser = {};
+      snap.forEach((d) => {
+        out[d.id] = d.data() as Record<string, true>;
+      });
+      onChange(out);
+    },
+    (error) => onError?.(error)
+  );
 }
 
 export function setFavorite(uid: string, photoId: string, value: boolean): Promise<void> {
@@ -119,10 +138,17 @@ function toComment(id: string, data: DocumentData): Comment {
  * i tak wymagają wiedzy o wszystkich, a przy kilkuset dokumentach to ułamek
  * dziennego limitu odczytów.
  */
-export function subscribeComments(onChange: (c: Comment[]) => void): () => void {
-  return onSnapshot(query(collection(db, 'comments'), orderBy('createdAt')), (snap) => {
-    onChange(snap.docs.map((d) => toComment(d.id, d.data())));
-  });
+export function subscribeComments(
+  onChange: (c: Comment[]) => void,
+  onError?: (error: Error) => void
+): () => void {
+  return onSnapshot(
+    query(collection(db, 'comments'), orderBy('createdAt')),
+    (snap) => {
+      onChange(snap.docs.map((d) => toComment(d.id, d.data())));
+    },
+    (error) => onError?.(error)
+  );
 }
 
 export async function addComment(uid: string, photoId: string, text: string): Promise<void> {

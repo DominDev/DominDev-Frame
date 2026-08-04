@@ -34,6 +34,12 @@ jobs:
       - name: Kontrola typow
         run: npm run typecheck
 
+      - name: Testy
+        run: npm test
+
+      - name: Audyt zależności produkcyjnych
+        run: npm audit --omit=dev --audit-level=moderate
+
       - name: Build
         run: npm run build
 

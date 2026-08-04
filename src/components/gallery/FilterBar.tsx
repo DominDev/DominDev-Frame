@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { AvgFilter, Filters, MyStarsFilter, SortKey, Tab } from '../../lib/stats';
 import { DEFAULT_FILTERS, isDefaultFilters } from '../../lib/stats';
 import styles from './FilterBar.module.css';
@@ -8,6 +9,8 @@ interface Props {
   shown: number;
   total: number;
   counts: Record<Tab, number>;
+  revealAverages?: boolean;
+  onToggleReveal?: (value: boolean) => void;
 }
 
 const TABS: { key: Tab; label: string }[] = [
@@ -38,9 +41,20 @@ const SORTS: { key: SortKey; label: string }[] = [
   { key: 'comment', label: 'Sortuj: ostatni komentarz' },
 ];
 
-export function FilterBar({ filters, onChange, shown, total, counts }: Props) {
+export function FilterBar({
+  filters,
+  onChange,
+  shown,
+  total,
+  counts,
+  revealAverages,
+  onToggleReveal,
+}: Props) {
+  const [advancedOpen, setAdvancedOpen] = useState(false);
   const set = <K extends keyof Filters>(key: K, value: Filters[K]) =>
     onChange({ ...filters, [key]: value });
+  const activeAdvanced =
+    Number(filters.myStars !== 'any') + Number(filters.avg !== 'any') + Number(filters.sort !== 'name');
 
   return (
     <div className={styles.root}>
@@ -59,42 +73,69 @@ export function FilterBar({ filters, onChange, shown, total, counts }: Props) {
         ))}
       </div>
 
-      <div className={styles.selects}>
-        <select
-          aria-label="Filtr własnej oceny"
-          value={filters.myStars}
-          onChange={(e) => set('myStars', e.target.value as MyStarsFilter)}
-        >
-          {STARS.map((o) => (
-            <option key={o.key} value={o.key}>
-              {o.label}
-            </option>
-          ))}
-        </select>
+      <button
+        type="button"
+        className={styles.advancedToggle}
+        aria-expanded={advancedOpen}
+        aria-controls="gallery-advanced-filters"
+        onClick={() => setAdvancedOpen((value) => !value)}
+      >
+        {advancedOpen ? 'Ukryj dodatkowe filtry' : 'Dodatkowe filtry'}
+        {activeAdvanced > 0 && <span className={styles.count}>{activeAdvanced}</span>}
+      </button>
 
-        <select
-          aria-label="Filtr średniej"
-          value={filters.avg}
-          onChange={(e) => set('avg', e.target.value as AvgFilter)}
-        >
-          {AVGS.map((o) => (
-            <option key={o.key} value={o.key}>
-              {o.label}
-            </option>
-          ))}
-        </select>
+      <div
+        id="gallery-advanced-filters"
+        className={`${styles.advanced} ${advancedOpen ? styles.advancedOpen : ''}`}
+      >
+        <div className={styles.selects}>
+          <select
+            aria-label="Filtr własnej oceny"
+            value={filters.myStars}
+            onChange={(e) => set('myStars', e.target.value as MyStarsFilter)}
+          >
+            {STARS.map((o) => (
+              <option key={o.key} value={o.key}>
+                {o.label}
+              </option>
+            ))}
+          </select>
 
-        <select
-          aria-label="Sortowanie"
-          value={filters.sort}
-          onChange={(e) => set('sort', e.target.value as SortKey)}
-        >
-          {SORTS.map((o) => (
-            <option key={o.key} value={o.key}>
-              {o.label}
-            </option>
-          ))}
-        </select>
+          <select
+            aria-label="Filtr średniej"
+            value={filters.avg}
+            onChange={(e) => set('avg', e.target.value as AvgFilter)}
+          >
+            {AVGS.map((o) => (
+              <option key={o.key} value={o.key}>
+                {o.label}
+              </option>
+            ))}
+          </select>
+
+          <select
+            aria-label="Sortowanie"
+            value={filters.sort}
+            onChange={(e) => set('sort', e.target.value as SortKey)}
+          >
+            {SORTS.map((o) => (
+              <option key={o.key} value={o.key}>
+                {o.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {onToggleReveal && (
+          <label className={styles.adminOption}>
+            <input
+              type="checkbox"
+              checked={revealAverages ?? false}
+              onChange={(event) => onToggleReveal(event.target.checked)}
+            />
+            Admin: pokazuj średnie także przed własną oceną
+          </label>
+        )}
       </div>
 
       <div className={styles.status}>

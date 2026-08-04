@@ -37,6 +37,7 @@ export interface AppData {
   latestComment: Map<string, number>;
   loading: boolean;
   error: string | null;
+  clearError: () => void;
   rate: (photoId: string, value: Rating | null) => void;
   toggleFavorite: (photoId: string) => void;
   comment: {
@@ -54,6 +55,13 @@ export function useAppData(uid: string | null, admin: boolean): AppData {
   const [manifestLoaded, setManifestLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const reportSyncError = useCallback((area: string, err: Error) => {
+    console.error(err);
+    setError(`Nie udało się zsynchronizować ${area}. Sprawdź połączenie i spróbuj ponownie.`);
+  }, []);
+
+  useEffect(() => setError(null), [uid]);
+
   useEffect(() => {
     if (!uid) return;
     let cancelled = false;
@@ -63,6 +71,7 @@ export function useAppData(uid: string | null, admin: boolean): AppData {
         if (cancelled) return;
         setPhotos(p);
         setManifestLoaded(true);
+        setError(null);
       })
       .catch((err) => {
         if (cancelled) return;
@@ -77,20 +86,38 @@ export function useAppData(uid: string | null, admin: boolean): AppData {
 
   useEffect(() => {
     if (!uid) return;
-    return subscribeRatings(setRatings);
-  }, [uid]);
+    return subscribeRatings(
+      setRatings,
+      (err) => reportSyncError('ocen', err)
+    );
+  }, [uid, reportSyncError]);
 
   useEffect(() => {
     if (!uid) return;
     // Admin widzi ulubione wszystkich - to jego raport. Zwykły użytkownik czyta
     // wyłącznie swój dokument, bo reguły nie pozwalają mu na nic więcej.
-    return admin ? subscribeAllFavorites(setFavorites) : subscribeMyFavorites(uid, (f) => setFavorites({ [uid]: f }));
-  }, [uid, admin]);
+    const onError = (err: Error) => reportSyncError('ulubionych', err);
+    return admin
+      ? subscribeAllFavorites(
+          setFavorites,
+          onError
+        )
+      : subscribeMyFavorites(
+          uid,
+          (next) => {
+            setFavorites({ [uid]: next });
+          },
+          onError
+        );
+  }, [uid, admin, reportSyncError]);
 
   useEffect(() => {
     if (!uid) return;
-    return subscribeComments(setComments);
-  }, [uid]);
+    return subscribeComments(
+      setComments,
+      (err) => reportSyncError('komentarzy', err)
+    );
+  }, [uid, reportSyncError]);
 
   const myRatings = useMemo(() => (uid ? (ratings[uid] ?? {}) : {}), [ratings, uid]);
   const myFavorites = useMemo(() => (uid ? (favorites[uid] ?? {}) : {}), [favorites, uid]);
@@ -102,10 +129,12 @@ export function useAppData(uid: string | null, admin: boolean): AppData {
   const rate = useCallback(
     (photoId: string, value: Rating | null) => {
       if (!uid) return;
-      void setRating(uid, photoId, value).catch((err) => {
-        console.error(err);
-        setError('Nie udało się zapisać oceny. Sprawdź połączenie.');
-      });
+      void setRating(uid, photoId, value)
+        .then(() => setError(null))
+        .catch((err) => {
+          console.error(err);
+          setError('Nie udało się zapisać oceny. Sprawdź połączenie.');
+        });
     },
     [uid]
   );
@@ -113,10 +142,12 @@ export function useAppData(uid: string | null, admin: boolean): AppData {
   const toggleFavorite = useCallback(
     (photoId: string) => {
       if (!uid) return;
-      void setFavorite(uid, photoId, !myFavorites[photoId]).catch((err) => {
-        console.error(err);
-        setError('Nie udało się zapisać ulubionych. Sprawdź połączenie.');
-      });
+      void setFavorite(uid, photoId, !myFavorites[photoId])
+        .then(() => setError(null))
+        .catch((err) => {
+          console.error(err);
+          setError('Nie udało się zapisać ulubionych. Sprawdź połączenie.');
+        });
     },
     [uid, myFavorites]
   );
@@ -142,6 +173,7 @@ export function useAppData(uid: string | null, admin: boolean): AppData {
     latestComment,
     loading: !manifestLoaded && error === null,
     error,
+    clearError: () => setError(null),
     rate,
     toggleFavorite,
     comment,

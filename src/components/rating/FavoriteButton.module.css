@@ -40,3 +40,11 @@
   width: 26px;
   height: 26px;
 }
+
+@media (max-width: 720px) {
+  .root {
+    flex: 0 0 var(--touch-target);
+    width: var(--touch-target);
+    height: var(--touch-target);
+  }
+}

@@ -5,6 +5,7 @@ import styles from './LoginForm.module.css';
 export function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -28,7 +29,7 @@ export function LoginForm() {
       <div className={styles.card}>
         <h1 className={styles.title}>Frame</h1>
         <p className={styles.lead}>
-          Wybieramy zdjęcia z sesji rodzinnej. Zaloguj się adresem, na który dostałeś hasło.
+          Wybieramy zdjęcia z sesji rodzinnej. Zaloguj się swoim adresem e-mail i hasłem.
         </p>
 
         <form onSubmit={onSubmit} noValidate>
@@ -49,14 +50,25 @@ export function LoginForm() {
 
           <div className={styles.field}>
             <label htmlFor="password">Hasło</label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete="current-password"
-              required
-            />
+            <div className={styles.passwordInput}>
+              <input
+                id="password"
+                type={passwordVisible ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
+                required
+              />
+              <button
+                type="button"
+                className={styles.passwordToggle}
+                aria-label={passwordVisible ? 'Ukryj hasło' : 'Pokaż hasło'}
+                aria-pressed={passwordVisible}
+                onClick={() => setPasswordVisible((value) => !value)}
+              >
+                {passwordVisible ? 'Ukryj' : 'Pokaż'}
+              </button>
+            </div>
           </div>
 
           {error && (
@@ -71,7 +83,7 @@ export function LoginForm() {
         </form>
 
         <p className={styles.hint}>
-          Nie pamiętasz hasła? Napisz do Pawła - ustawi nowe.
+          Masz problem z logowaniem? Skontaktuj się z Pawłem.
         </p>
       </div>
     </main>

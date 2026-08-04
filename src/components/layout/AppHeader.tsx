@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { logout } from '../../lib/auth';
 import { ChangePasswordDialog } from '../auth/ChangePasswordDialog';
 import { ProgressBar } from './ProgressBar';
@@ -13,10 +13,23 @@ interface Props {
   /** `null`, gdy wszystko jest już ocenione. */
   onJumpToUnrated: (() => void) | null;
   onGoTo: (view: 'gallery' | 'admin') => void;
+  onShowHelp: () => void;
 }
 
-export function AppHeader({ name, admin, view, rated, total, onJumpToUnrated, onGoTo }: Props) {
+export function AppHeader({
+  name,
+  admin,
+  view,
+  rated,
+  total,
+  onJumpToUnrated,
+  onGoTo,
+  onShowHelp,
+}: Props) {
   const [passwordOpen, setPasswordOpen] = useState(false);
+  const accountRef = useRef<HTMLDetailsElement>(null);
+
+  const closeAccountMenu = () => accountRef.current?.removeAttribute('open');
 
   return (
     <header className={styles.root}>
@@ -35,7 +48,8 @@ export function AppHeader({ name, admin, view, rated, total, onJumpToUnrated, on
       <nav className={styles.right} aria-label="Menu">
         {onJumpToUnrated && (
           <button type="button" className={styles.action} onClick={onJumpToUnrated}>
-            Pierwsze nieocenione
+            <span className={styles.desktopLabel}>Pierwsze nieocenione</span>
+            <span className={styles.mobileLabel}>Nieocenione</span>
           </button>
         )}
 
@@ -49,14 +63,57 @@ export function AppHeader({ name, admin, view, rated, total, onJumpToUnrated, on
           </button>
         )}
 
-        <span className={styles.name}>{name}</span>
+        <div className={styles.desktopAccount}>
+          <span className={styles.name}>{name}</span>
+          <button type="button" className={styles.quiet} onClick={onShowHelp}>
+            Jak oceniać?
+          </button>
+          <button type="button" className={styles.quiet} onClick={() => setPasswordOpen(true)}>
+            Zmień hasło
+          </button>
+          <button type="button" className={styles.quiet} onClick={() => void logout()}>
+            Wyloguj
+          </button>
+        </div>
 
-        <button type="button" className={styles.quiet} onClick={() => setPasswordOpen(true)}>
-          Zmień hasło
-        </button>
-        <button type="button" className={styles.quiet} onClick={() => void logout()}>
-          Wyloguj
-        </button>
+        <details ref={accountRef} className={styles.mobileAccount}>
+          <summary className={styles.accountSummary}>
+            <span>{name}</span>
+            <span className={styles.accountHint}>konto</span>
+          </summary>
+          <div className={styles.accountMenu}>
+            <button
+              type="button"
+              className={styles.quiet}
+              onClick={() => {
+                closeAccountMenu();
+                onShowHelp();
+              }}
+            >
+              Jak oceniać?
+            </button>
+            <button
+              type="button"
+              className={styles.quiet}
+              onClick={() => {
+                closeAccountMenu();
+                setPasswordOpen(true);
+              }}
+            >
+              Zmień hasło
+            </button>
+            <button
+              type="button"
+              className={styles.quiet}
+              onClick={() => {
+                closeAccountMenu();
+                void logout();
+              }}
+            >
+              Wyloguj
+            </button>
+          </div>
+        </details>
       </nav>
 
       <ChangePasswordDialog open={passwordOpen} onClose={() => setPasswordOpen(false)} />

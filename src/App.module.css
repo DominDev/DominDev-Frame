@@ -5,10 +5,32 @@
 }
 
 .error {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  justify-content: space-between;
   padding: var(--space-3) var(--space-4);
   margin-bottom: var(--space-4);
   color: var(--danger);
   background: #fdecea;
   border: 1px solid #f5c6c2;
+  border-radius: var(--radius);
+}
+
+.error button {
+  min-height: 2.5rem;
+  padding: 0 var(--space-3);
+  color: var(--danger);
+  background: var(--surface);
+  border: 1px solid currentColor;
+  border-radius: var(--radius);
+}
+
+.offline {
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  color: var(--text);
+  background: #fff6d8;
+  border: 1px solid #c89a22;
   border-radius: var(--radius);
 }

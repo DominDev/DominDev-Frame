@@ -114,13 +114,13 @@
 .copyHint {
   font-family: var(--font-sans);
   font-size: var(--text-xs);
-  color: var(--text-faint);
+  color: var(--text-on-dark-muted);
 }
 
 .position {
   font-size: var(--text-sm);
   font-variant-numeric: tabular-nums;
-  color: var(--text-faint);
+  color: var(--text-on-dark-muted);
   white-space: nowrap;
 }
 
@@ -152,7 +152,7 @@
 }
 
 .muted {
-  color: var(--text-faint);
+  color: var(--text-on-dark-muted);
 }
 
 /* --- Telefon: panel wjeżdża pod zdjęcie ---------------------------------- */

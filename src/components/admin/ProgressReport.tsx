@@ -22,7 +22,7 @@ export function ProgressReport({ ratings, total }: Props) {
           return (
             <li key={uid} className={styles.progressItem}>
               <span className={styles.progressName}>{USERS[uid].name}</span>
-              <div className={styles.progressTrack}>
+              <div className={styles.progressTrack} aria-hidden="true">
                 <div
                   className={`${styles.progressFill} ${rated === total && total > 0 ? styles.progressDone : ''}`}
                   style={{ width: `${percent}%` }}

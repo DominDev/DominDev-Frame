@@ -69,10 +69,20 @@ export function RatingReport({ photos, ratings, stats }: Props) {
             </select>
           </label>
 
-          <button type="button" className={styles.button} onClick={copyNames}>
+          <button
+            type="button"
+            className={styles.button}
+            disabled={rows.length === 0}
+            onClick={copyNames}
+          >
             {copied ? 'Skopiowano' : `Kopiuj nazwy (${rows.length})`}
           </button>
-          <button type="button" className={styles.buttonPrimary} onClick={exportCsv}>
+          <button
+            type="button"
+            className={styles.buttonPrimary}
+            disabled={rows.length === 0}
+            onClick={exportCsv}
+          >
             Eksport CSV
           </button>
         </div>
@@ -83,8 +93,22 @@ export function RatingReport({ photos, ratings, stats }: Props) {
         nazw plików, po jednej w wierszu - gotową do wklejenia w wyszukiwarkę plików.
       </p>
 
-      <div className={styles.tableWrap}>
-        <table className={styles.table}>
+      {rows.length === 0 ? (
+        <p className={styles.emptyReport} role="status">
+          Brak zdjęć spełniających wybrane minimum ocen. Wybierz niższy próg, żeby zobaczyć
+          wyniki.
+        </p>
+      ) : (
+        <div
+          className={styles.tableWrap}
+          role="region"
+          aria-label="Przewijana tabela raportu ocen"
+          tabIndex={0}
+        >
+          <table className={styles.table}>
+          <caption className="visuallyHidden">
+            Zdjęcia posortowane według średniej oceny wraz z ocenami członków rodziny
+          </caption>
           <thead>
             <tr>
               <th scope="col">#</th>
@@ -115,8 +139,9 @@ export function RatingReport({ photos, ratings, stats }: Props) {
               </tr>
             ))}
           </tbody>
-        </table>
-      </div>
+          </table>
+        </div>
+      )}
     </section>
   );
 }

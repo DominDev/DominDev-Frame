@@ -84,12 +84,12 @@
    z przyciskiem, który powiększa dalej. */
 .zoomReset {
   font-weight: 500;
-  color: var(--text-faint);
+  color: var(--text-on-dark-muted);
   background: rgb(0 0 0 / 40%);
 }
 
 .hint {
   font-size: var(--text-xs);
-  color: var(--text-faint);
+  color: var(--text-on-dark-muted);
   text-align: center;
 }

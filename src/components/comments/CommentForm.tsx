@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useId, useState, type FormEvent } from 'react';
 import { COMMENT_MAX_LENGTH } from '../../config/constants';
 import styles from './Comments.module.css';
 
@@ -18,6 +18,7 @@ export function CommentForm({
   onCancel,
   autoFocus,
 }: Props) {
+  const textareaId = useId();
   const [text, setText] = useState(initialText);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -44,11 +45,11 @@ export function CommentForm({
 
   return (
     <form className={styles.form} onSubmit={submit}>
-      <label className="visuallyHidden" htmlFor="comment-text">
+      <label className="visuallyHidden" htmlFor={textareaId}>
         Treść komentarza
       </label>
       <textarea
-        id="comment-text"
+        id={textareaId}
         className={styles.textarea}
         value={text}
         onChange={(e) => setText(e.target.value)}

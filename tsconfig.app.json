@@ -14,7 +14,7 @@
     "noUncheckedSideEffectImports": true,
     "erasableSyntaxOnly": true,
 
-    "allowImportingTsExtensions": false,
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,

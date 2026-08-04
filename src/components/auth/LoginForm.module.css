@@ -50,6 +50,29 @@
   border-color: var(--focus-ring);
 }
 
+.passwordInput {
+  position: relative;
+}
+
+.passwordInput input {
+  padding-right: 5.5rem;
+}
+
+.passwordToggle {
+  position: absolute;
+  top: 50%;
+  right: var(--space-1);
+  min-height: 2.25rem;
+  padding: 0 var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--accent-hover);
+  background: var(--surface-hover);
+  border: none;
+  border-radius: var(--radius-sm);
+  transform: translateY(-50%);
+}
+
 .error {
   margin-bottom: var(--space-3);
   padding: var(--space-2) var(--space-3);

@@ -91,7 +91,7 @@ Działa natychmiast i nie wymusza zmiany przy kolejnym logowaniu. Listę kont po
 |---|---|
 | `npm run dev` | serwer deweloperski |
 | `npm run build` | build produkcyjny (CI robi to sam przy każdym push) |
-| `npm test` | testy logiki podglądu |
+| `npm test` | testy podglądu, filtrów, raportów CSV i haseł |
 | `npm run typecheck` | kontrola typów |
 | `npm run photos:prepare` | przetworzenie `_source/` na warianty webp |
 | `npm run photos:upload` | wysyłka do Storage i zapis manifestu |

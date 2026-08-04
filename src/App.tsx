@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import type { Photo } from './types';
 import { useAuth } from './hooks/useAuth';
 import { useAppData } from './hooks/useAppData';
 import { useRoute } from './hooks/useRoute';
 import { useIsWide } from './hooks/useMediaQuery';
+import { useOnlineStatus } from './hooks/useOnlineStatus';
 import { ratedCount, selectPhotos, type Tab } from './lib/stats';
 import { resolveViewer } from './lib/viewer';
 import { LoginForm } from './components/auth/LoginForm';
@@ -11,25 +12,58 @@ import { AppHeader } from './components/layout/AppHeader';
 import { FilterBar } from './components/gallery/FilterBar';
 import { GalleryGrid } from './components/gallery/GalleryGrid';
 import { PhotoViewer } from './components/viewer/PhotoViewer';
-import { AdminPanel } from './components/admin/AdminPanel';
+import { HelpDialog } from './components/help/HelpDialog';
 import styles from './App.module.css';
 
 const REVEAL_KEY = 'frame:revealAverages';
+const HELP_SEEN_KEY = 'frame:helpSeen';
+const AdminPanel = lazy(() =>
+  import('./components/admin/AdminPanel').then((module) => ({ default: module.AdminPanel }))
+);
 
 export default function App() {
   const auth = useAuth();
   const data = useAppData(auth.uid, auth.admin);
   const route = useRoute();
   const wide = useIsWide();
+  const online = useOnlineStatus();
+  const [helpOpen, setHelpOpen] = useState(false);
+
+  useEffect(() => {
+    if (!auth.uid) {
+      setHelpOpen(false);
+      return;
+    }
+    setHelpOpen(localStorage.getItem(`${HELP_SEEN_KEY}:${auth.uid}`) !== '1');
+  }, [auth.uid]);
+
+  const closeHelp = () => {
+    if (auth.uid) localStorage.setItem(`${HELP_SEEN_KEY}:${auth.uid}`, '1');
+    setHelpOpen(false);
+  };
 
   // Admin może zdjąć zasłonę ze średnich - przy czytaniu raportów zasłona
-  // tylko przeszkadza. Wybór przeżywa odświeżenie strony.
-  const [revealAverages, setRevealAverages] = useState(
-    () => localStorage.getItem(REVEAL_KEY) === '1'
-  );
+  // tylko przeszkadza. Ustawienie jest przypisane do konta admina, żeby na
+  // współdzielonym komputerze nie przeszło na konto innego członka rodziny.
+  const [revealAverages, setRevealAverages] = useState(false);
   useEffect(() => {
-    localStorage.setItem(REVEAL_KEY, revealAverages ? '1' : '0');
-  }, [revealAverages]);
+    if (!auth.uid || !auth.admin) {
+      setRevealAverages(false);
+      return;
+    }
+
+    const userKey = `${REVEAL_KEY}:${auth.uid}`;
+    const saved = localStorage.getItem(userKey) ?? localStorage.getItem(REVEAL_KEY);
+    setRevealAverages(saved === '1');
+    if (saved !== null) localStorage.setItem(userKey, saved === '1' ? '1' : '0');
+    localStorage.removeItem(REVEAL_KEY);
+  }, [auth.uid, auth.admin]);
+
+  const updateRevealAverages = (value: boolean) => {
+    if (!auth.uid || !auth.admin) return;
+    setRevealAverages(value);
+    localStorage.setItem(`${REVEAL_KEY}:${auth.uid}`, value ? '1' : '0');
+  };
 
   const selected = useMemo(
     () =>
@@ -90,6 +124,9 @@ export default function App() {
 
   return (
     <>
+      <a className="skipLink" href="#main-content">
+        Przejdź do głównej treści
+      </a>
       <AppHeader
         name={auth.name}
         admin={auth.admin}
@@ -104,34 +141,47 @@ export default function App() {
             : null
         }
         onGoTo={route.goTo}
+        onShowHelp={() => setHelpOpen(true)}
       />
 
-      <main className="appMain">
-        {data.error && (
-          <p className={styles.error} role="alert">
-            {data.error}
+      <main id="main-content" className="appMain" tabIndex={-1}>
+        {!online && (
+          <p className={styles.offline} role="status">
+            Brak połączenia z internetem. Możesz oglądać wczytane zdjęcia, a oczekujące zmiany
+            zostaną wysłane po odzyskaniu połączenia.
           </p>
+        )}
+        {data.error && (
+          <div className={styles.error} role="alert">
+            <span>{data.error}</span>
+            <button type="button" onClick={data.clearError}>
+              Zamknij
+            </button>
+          </div>
         )}
 
         {data.loading ? (
           <p className={styles.splash}>Wczytywanie zdjęć...</p>
         ) : route.view === 'admin' && auth.admin ? (
-          <AdminPanel
-            photos={data.photos}
-            ratings={data.ratings}
-            favorites={data.favorites}
-            stats={data.stats}
-            revealAverages={revealAverages}
-            onToggleReveal={setRevealAverages}
-          />
+          <Suspense fallback={<p className={styles.splash}>Wczytywanie raportów...</p>}>
+            <AdminPanel
+              photos={data.photos}
+              ratings={data.ratings}
+              favorites={data.favorites}
+              stats={data.stats}
+            />
+          </Suspense>
         ) : (
           <>
+            <h1 className="visuallyHidden">Galeria zdjęć</h1>
             <FilterBar
               filters={route.filters}
               onChange={route.setFilters}
               shown={selected.length}
               total={data.photos.length}
               counts={tabCounts}
+              revealAverages={auth.admin ? revealAverages : undefined}
+              onToggleReveal={auth.admin ? updateRevealAverages : undefined}
             />
             <GalleryGrid
               photos={selected}
@@ -140,7 +190,7 @@ export default function App() {
               stats={data.stats}
               commentCounts={data.commentCounts}
               showStars={wide}
-              revealAverage={revealAverages}
+              revealAverage={auth.admin && revealAverages}
               onOpen={route.openPhoto}
               onRate={data.rate}
               onToggleFavorite={data.toggleFavorite}
@@ -159,7 +209,7 @@ export default function App() {
           comments={data.comments}
           currentUid={auth.uid}
           admin={auth.admin}
-          revealAverage={revealAverages}
+          revealAverage={auth.admin && revealAverages}
           onClose={route.closePhoto}
           onNavigate={(i) => route.openPhoto(viewer.photos[i].id)}
           onRate={data.rate}
@@ -169,6 +219,8 @@ export default function App() {
           onDeleteComment={data.comment.remove}
         />
       )}
+
+      <HelpDialog open={helpOpen} onClose={closeHelp} />
     </>
   );
 }

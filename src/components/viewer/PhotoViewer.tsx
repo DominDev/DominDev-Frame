@@ -109,7 +109,15 @@ export function PhotoViewer({
   const photoComments = comments.filter((c) => c.photoId === photo.id);
 
   return (
-    <dialog ref={ref} className={styles.dialog} onClose={onClose}>
+    <dialog
+      ref={ref}
+      className={styles.dialog}
+      aria-labelledby="photo-viewer-title"
+      onClose={onClose}
+    >
+      <h2 id="photo-viewer-title" className="visuallyHidden">
+        Podgląd zdjęcia {photo.name}
+      </h2>
       <div className={styles.layout}>
         <div className={styles.stage}>
           <button type="button" className={styles.close} onClick={onClose} title="Zamknij (Esc)">

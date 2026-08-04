@@ -64,10 +64,20 @@ export function FavoritesReport({ photos, favorites }: Props) {
             Tylko wybrane przez co najmniej 2 osoby
           </label>
 
-          <button type="button" className={styles.button} onClick={copyNames}>
+          <button
+            type="button"
+            className={styles.button}
+            disabled={rows.length === 0}
+            onClick={copyNames}
+          >
             {copied ? 'Skopiowano' : `Kopiuj nazwy (${rows.length})`}
           </button>
-          <button type="button" className={styles.buttonPrimary} onClick={exportCsv}>
+          <button
+            type="button"
+            className={styles.buttonPrimary}
+            disabled={rows.length === 0}
+            onClick={exportCsv}
+          >
             Eksport CSV
           </button>
         </div>
@@ -80,8 +90,16 @@ export function FavoritesReport({ photos, favorites }: Props) {
             : 'Nikt nie dodał jeszcze żadnego zdjęcia do ulubionych.'}
         </p>
       ) : (
-        <div className={styles.tableWrap}>
+        <div
+          className={styles.tableWrap}
+          role="region"
+          aria-label="Przewijana tabela raportu ulubionych"
+          tabIndex={0}
+        >
           <table className={styles.table}>
+            <caption className="visuallyHidden">
+              Zdjęcia dodane do ulubionych wraz z liczbą i nazwami wybierających osób
+            </caption>
             <thead>
               <tr>
                 <th scope="col">#</th>

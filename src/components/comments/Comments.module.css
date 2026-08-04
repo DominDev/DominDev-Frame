@@ -29,7 +29,7 @@
 .date,
 .edited {
   font-size: var(--text-xs);
-  color: var(--text-faint);
+  color: var(--text-on-dark-muted);
 }
 
 .edited {
@@ -50,7 +50,7 @@
 .link {
   padding: 0;
   font-size: var(--text-sm);
-  color: var(--text-faint);
+  color: var(--text-on-dark-muted);
   text-decoration: underline;
   background: none;
   border: none;
@@ -62,7 +62,7 @@
 
 .empty {
   margin-bottom: var(--space-4);
-  color: var(--text-faint);
+  color: var(--text-on-dark-muted);
 }
 
 .form {
@@ -82,7 +82,7 @@
 }
 
 .textarea::placeholder {
-  color: var(--text-faint);
+  color: var(--text-on-dark-muted);
 }
 
 .formFooter {
@@ -99,7 +99,7 @@
 }
 
 .counter {
-  color: var(--text-faint);
+  color: var(--text-on-dark-muted);
 }
 
 .counterOver {

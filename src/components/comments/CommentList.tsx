@@ -17,13 +17,35 @@ const formatDate = (d: Date): string =>
 
 export function CommentList({ comments, currentUid, admin, onEdit, onDelete }: Props) {
   const [editing, setEditing] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  async function remove(commentId: string) {
+    if (!confirm('Usunąć ten komentarz?')) return;
+    setDeleting(commentId);
+    setDeleteError(null);
+    try {
+      await onDelete(commentId);
+    } catch (err) {
+      console.error(err);
+      setDeleteError('Nie udało się usunąć komentarza. Sprawdź połączenie i spróbuj ponownie.');
+    } finally {
+      setDeleting(null);
+    }
+  }
 
   if (comments.length === 0) {
     return <p className={styles.empty}>Brak komentarzy. Możesz być pierwszy.</p>;
   }
 
   return (
-    <ul className={styles.list}>
+    <>
+      {deleteError && (
+        <p className={styles.error} role="alert">
+          {deleteError}
+        </p>
+      )}
+      <ul className={styles.list}>
       {comments.map((c) => {
         const mine = c.uid === currentUid;
 
@@ -66,11 +88,10 @@ export function CommentList({ comments, currentUid, admin, onEdit, onDelete }: P
                     <button
                       type="button"
                       className={styles.link}
-                      onClick={() => {
-                        if (confirm('Usunąć ten komentarz?')) void onDelete(c.id);
-                      }}
+                      disabled={deleting === c.id}
+                      onClick={() => void remove(c.id)}
                     >
-                      Usuń
+                      {deleting === c.id ? 'Usuwanie...' : 'Usuń'}
                     </button>
                   </div>
                 )}
@@ -79,6 +100,7 @@ export function CommentList({ comments, currentUid, admin, onEdit, onDelete }: P
           </li>
         );
       })}
-    </ul>
+      </ul>
+    </>
   );
 }
