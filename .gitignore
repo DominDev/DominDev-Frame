@@ -8,8 +8,15 @@ _source/*
 !_source/README.md
 _processed/
 
-# Sekrety - klucz konta usługi mieszka w %USERPROFILE%\.frame\
+# Sekrety - klucz konta usługi mieszka w %USERPROFILE%\.frame\, nigdy tutaj.
+# Wzorce muszą łapać także nazwę nadawaną przez konsolę Firebase przy pobieraniu,
+# czyli <projekt>-firebase-adminsdk-<skrót>-<hash>.json
 *service-account*.json
+*serviceaccount*.json
+*-adminsdk-*.json
+*firebase-adminsdk*.json
+*.pem
+*.key
 .env
 .env.*
 !.env.example

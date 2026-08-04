@@ -1,0 +1,32 @@
+{
+  "name": "domindev-frame",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Frame - wybór zdjęć z rodzinnej sesji fotograficznej",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -b --noEmit",
+    "photos:prepare": "node scripts/prepare-photos.mjs",
+    "photos:upload": "node scripts/upload-photos.mjs",
+    "user:password": "node scripts/set-user-password.mjs",
+    "verify:firebase": "node scripts/verify-firebase.mjs"
+  },
+  "dependencies": {
+    "firebase": "^12.17.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.2",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.0.5",
+    "firebase-admin": "^14.2.0",
+    "sharp": "^0.35.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.0"
+  }
+}

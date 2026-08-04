@@ -1,0 +1,11 @@
+{
+  "_komentarz": "Jedyne źródło prawdy o użytkownikach. Czyta to front (src/config/users.ts) oraz skrypty administracyjne (scripts/lib/users.mjs). Kluczami są UID-y z Firebase Auth. Adresy e-mail celowo nie znajdują się w repozytorium - jest publiczne, a aplikacja identyfikuje użytkownika po UID.",
+  "adminUid": "ZDJEbmeLnkR8cA4t1wm6KHJvVKr2",
+  "users": {
+    "ZDJEbmeLnkR8cA4t1wm6KHJvVKr2": { "name": "Paweł", "role": "admin" },
+    "NgFMxRuogIaY5S6sx5Wcn4Gy7mC2": { "name": "Aleksandra", "role": "user" },
+    "l6yqqGHfzdRXKSlK19f40VIYPDD2": { "name": "Damian", "role": "user" },
+    "1WZETHnCh2QuFqjx7wLg2NOCjzx1": { "name": "Renata", "role": "user" },
+    "nnSRvuCtH4Xk4gMsWU9AFJ4UvFl2": { "name": "Jerzy", "role": "user" }
+  }
+}
