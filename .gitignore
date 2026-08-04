@@ -1,0 +1,20 @@
+# Zależności i build
+node_modules/
+dist/
+.vite/
+
+# Zdjęcia - NIGDY nie trafiają do repozytorium
+_source/*
+!_source/README.md
+_processed/
+
+# Sekrety - klucz konta usługi mieszka w %USERPROFILE%\.frame\
+*service-account*.json
+.env
+.env.*
+!.env.example
+
+# System
+.DS_Store
+Thumbs.db
+desktop.ini
