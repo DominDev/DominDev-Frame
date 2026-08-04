@@ -1,0 +1,63 @@
+name: Publikacja na GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Pages potrzebuje tych uprawnien do wystawienia artefaktu i wdrozenia.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Rownolegle wdrozenia nadpisywalyby sie nawzajem. Trwajace wdrozenie
+# dokonczy sie, a kolejny push poczeka.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalacja zaleznosci
+        run: npm ci
+
+      - name: Kontrola typow
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+
+      - name: Kontrola rozmiaru paczki
+        # W dist trafia wylacznie kod - zdjecia mieszkaja w Firebase Storage.
+        # Kilka MB oznaczaloby, ze cos niepowolanego weszlo do repozytorium.
+        run: |
+          SIZE_KB=$(du -sk dist | cut -f1)
+          echo "Rozmiar dist: ${SIZE_KB} KB"
+          if [ "$SIZE_KB" -gt 5120 ]; then
+            echo "::error::dist ma ${SIZE_KB} KB, limit to 5120 KB."
+            exit 1
+          fi
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

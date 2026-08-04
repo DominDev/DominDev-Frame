@@ -1,0 +1,21 @@
+rules_version = '2';
+
+// Reguły bucketu frame-a4fba.firebasestorage.app.
+//
+// Odmawiają wszystkiego: żadnego odczytu, zapisu ani listowania przez SDK
+// klienta. Zdjęcia pobierane są wyłącznie przez adresy z tokenem pobierania,
+// które omijają reguły z założenia - token sam w sobie jest przepustką.
+//
+// Tokeny leżą w manifeście w Firestore, za regułami, więc osoba niezalogowana
+// nie zdobędzie żadnego adresu. Zweryfikowane: odczyt z tokenem zwraca 200,
+// bez tokenu 403, listowanie 403.
+//
+// Pliki wysyła Admin SDK ze skryptu, który omija reguły.
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

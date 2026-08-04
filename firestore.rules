@@ -1,0 +1,104 @@
+rules_version = '2';
+
+// Reguły bazy `frame-db` w projekcie frame-a4fba.
+//
+// Zasada: front zna role tylko po to, żeby wiedzieć co narysować. Kto co może
+// naprawdę zrobić, rozstrzyga się tutaj. Podmiana kodu w przeglądarce nie daje
+// dostępu do niczego.
+//
+// Admin SDK (skrypty administracyjne) omija te reguły w całości - dlatego zapis
+// do `manifest` jest tu zabroniony wszystkim, a i tak działa ze skryptu.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // --- Pomocnicze ---------------------------------------------------------
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isSelf(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.uid == 'ZDJEbmeLnkR8cA4t1wm6KHJvVKr2';
+    }
+
+    // --- Manifest zdjęć -----------------------------------------------------
+    //
+    // Zawiera tokeny pobierania, czyli klucze na okaziciela do plików w Storage.
+    // To jest jedyna bariera, która nie pozwala osobie niezalogowanej zdobyć
+    // adresu jakiegokolwiek zdjęcia.
+
+    match /manifest/{chunk} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    // --- Oceny --------------------------------------------------------------
+    //
+    // Dokument na osobę: { "<id zdjęcia>": 1..5 }. Odczyt dla wszystkich
+    // zalogowanych, bo średnia liczona jest po stronie klienta. Zapis wyłącznie
+    // własnego dokumentu.
+    //
+    // `values().hasOnly([1,2,3,4,5])` odrzuca 0, 6, tekst, null oraz 3.5 - liczba
+    // zmiennoprzecinkowa 3.0 nie jest w regułach równa całkowitej 3.
+
+    match /ratings/{uid} {
+      allow read: if signedIn();
+      allow write: if isSelf(uid)
+        && request.resource.data.keys().size() <= 1000
+        && request.resource.data.values().hasOnly([1, 2, 3, 4, 5]);
+    }
+
+    // --- Ulubione -----------------------------------------------------------
+    //
+    // Widoczne wyłącznie dla właściciela i dla admina. To wymóg funkcjonalny,
+    // nie kosmetyka interfejsu, więc egzekwowany jest tutaj.
+
+    match /favorites/{uid} {
+      allow read: if isSelf(uid) || isAdmin();
+      allow write: if isSelf(uid)
+        && request.resource.data.keys().size() <= 1000
+        && request.resource.data.values().hasOnly([true]);
+    }
+
+    // --- Komentarze ---------------------------------------------------------
+    //
+    // Widoczne dla wszystkich zalogowanych, podpisane UID-em autora.
+    // Edycja zmienia wyłącznie treść - autorstwa, przypisania do zdjęcia
+    // ani daty utworzenia podmienić się nie da.
+
+    match /comments/{commentId} {
+      function validText(t) {
+        return t is string && t.size() > 0 && t.size() <= 1000;
+      }
+
+      allow read: if signedIn();
+
+      allow create: if isSelf(request.resource.data.uid)
+        && request.resource.data.keys().hasOnly(['photoId', 'uid', 'text', 'createdAt'])
+        && request.resource.data.keys().hasAll(['photoId', 'uid', 'text', 'createdAt'])
+        && request.resource.data.photoId is string
+        && request.resource.data.photoId.size() <= 200
+        && validText(request.resource.data.text)
+        && request.resource.data.createdAt == request.time;
+
+      allow update: if isSelf(resource.data.uid)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['text', 'editedAt'])
+        && validText(request.resource.data.text)
+        && request.resource.data.editedAt == request.time;
+
+      allow delete: if isSelf(resource.data.uid) || isAdmin();
+    }
+
+    // --- Wszystko pozostałe -------------------------------------------------
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

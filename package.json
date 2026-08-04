@@ -12,7 +12,8 @@
     "photos:prepare": "node scripts/prepare-photos.mjs",
     "photos:upload": "node scripts/upload-photos.mjs",
     "user:password": "node scripts/set-user-password.mjs",
-    "verify:firebase": "node scripts/verify-firebase.mjs"
+    "verify:firebase": "node scripts/verify-firebase.mjs",
+    "rules:deploy": "node scripts/deploy-rules.mjs"
   },
   "dependencies": {
     "firebase": "^12.17.0",
