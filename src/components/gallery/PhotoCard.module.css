@@ -31,6 +31,12 @@
   object-fit: cover;
 }
 
+/* Pionowego kadru nie wolno przycinać do poziomego paska. Stała wysokość
+   miniatur utrzymuje równy rytm galerii, a contain pokazuje pełne zdjęcie. */
+.portrait {
+  object-fit: contain;
+}
+
 /* Plakietka z własną oceną - wariant dla wąskich ekranów, gdzie nie ma gwiazdek. */
 .myBadge {
   position: absolute;
