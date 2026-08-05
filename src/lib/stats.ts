@@ -64,6 +64,7 @@ export type AvgFilter = 'any' | 'min45' | 'min4' | 'min3';
 export type SortKey = 'name' | 'avg' | 'votes' | 'comment';
 
 export interface Filters {
+  query: string;
   tab: Tab;
   myStars: MyStarsFilter;
   avg: AvgFilter;
@@ -71,6 +72,7 @@ export interface Filters {
 }
 
 export const DEFAULT_FILTERS: Filters = {
+  query: '',
   tab: 'all',
   myStars: 'any',
   avg: 'any',
@@ -78,7 +80,11 @@ export const DEFAULT_FILTERS: Filters = {
 };
 
 export const isDefaultFilters = (f: Filters): boolean =>
-  f.tab === 'all' && f.myStars === 'any' && f.avg === 'any' && f.sort === 'name';
+  f.query.trim() === '' &&
+  f.tab === 'all' &&
+  f.myStars === 'any' &&
+  f.avg === 'any' &&
+  f.sort === 'name';
 
 export interface GalleryInput {
   photos: Photo[];
@@ -122,9 +128,11 @@ function matchesTab(tab: Tab, input: GalleryInput, photo: Photo): boolean {
 /** Filtruje i sortuje galerię zgodnie z bieżącymi ustawieniami. */
 export function selectPhotos(input: GalleryInput): Photo[] {
   const { photos, filters, myRatings, stats, commentCounts, latestComment } = input;
+  const query = filters.query.trim().normalize('NFKC').toLocaleLowerCase('pl-PL');
 
   const filtered = photos.filter(
     (p) =>
+      (!query || p.name.normalize('NFKC').toLocaleLowerCase('pl-PL').includes(query)) &&
       matchesTab(filters.tab, input, p) &&
       matchesMyStars(filters.myStars, myRatings[p.id]) &&
       matchesAvg(filters.avg, statsFor(stats, p.id).avg)

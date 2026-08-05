@@ -14,6 +14,8 @@ interface Props {
   commentCounts: Map<string, number>;
   showStars: boolean;
   revealAverage: boolean;
+  searchQuery: string;
+  onClearSearch: () => void;
   onOpen: (photoId: string) => void;
   onRate: (photoId: string, value: Rating | null) => void;
   onToggleFavorite: (photoId: string) => void;
@@ -27,6 +29,8 @@ export function GalleryGrid({
   commentCounts,
   showStars,
   revealAverage,
+  searchQuery,
+  onClearSearch,
   onOpen,
   onRate,
   onToggleFavorite,
@@ -58,10 +62,21 @@ export function GalleryGrid({
   }, [limit, photos.length]);
 
   if (photos.length === 0) {
+    const query = searchQuery.trim();
     return (
-      <p className={styles.empty}>
-        Żadne zdjęcie nie pasuje do wybranych filtrów. Zmień filtry albo je wyczyść.
-      </p>
+      <div className={styles.empty} role="status">
+        {query ? (
+          <>
+            <p>Nie znaleziono zdjęć pasujących do „{query}”.</p>
+            <p>Spróbuj krótszego fragmentu nazwy lub zmień pozostałe filtry.</p>
+            <button type="button" className={styles.emptyAction} onClick={onClearSearch}>
+              Wyczyść wyszukiwanie
+            </button>
+          </>
+        ) : (
+          <p>Żadne zdjęcie nie pasuje do wybranych filtrów. Zmień filtry albo je wyczyść.</p>
+        )}
+      </div>
     );
   }
 

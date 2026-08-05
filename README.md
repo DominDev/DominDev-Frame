@@ -48,6 +48,7 @@ końca” albo kilka niespójnych list. Frame utrzymuje cały proces w jednym mi
 - średnia odsłaniana dopiero po własnej ocenie;
 - prywatne ulubione widoczne również dla administratora;
 - wspólne komentarze podpisane imieniem;
+- wyszukiwanie zdjęć po pełnej nazwie lub jej fragmencie;
 - filtry zdjęć nieocenionych, ulubionych i skomentowanych;
 - dodatkowe filtrowanie po własnej ocenie i średniej;
 - sortowanie po nazwie, średniej, liczbie głosów lub komentarzach;
