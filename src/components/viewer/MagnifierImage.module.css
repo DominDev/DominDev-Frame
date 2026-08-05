@@ -29,10 +29,43 @@
 .zoomed {
   place-items: start;
   overflow: auto;
+  scrollbar-color: rgb(242 242 243 / 48%) var(--viewer-bg);
+  scrollbar-width: thin;
 
   /* Przesuwanie palcem w obu osiach zamiast przewijania całej strony. */
   touch-action: pan-x pan-y;
   overscroll-behavior: contain;
+}
+
+.zoomed::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.zoomed::-webkit-scrollbar-track,
+.zoomed::-webkit-scrollbar-corner {
+  background: var(--viewer-bg);
+}
+
+.zoomed::-webkit-scrollbar-thumb {
+  background: rgb(242 242 243 / 48%);
+  background-clip: padding-box;
+  border: 2px solid var(--viewer-bg);
+  border-radius: 999px;
+}
+
+.zoomed::-webkit-scrollbar-thumb:hover {
+  background: rgb(242 242 243 / 68%);
+  background-clip: padding-box;
+}
+
+.zoomed::-webkit-scrollbar-thumb:active {
+  background: rgb(242 242 243 / 82%);
+  background-clip: padding-box;
+}
+
+.zoomed::-webkit-scrollbar-button {
+  display: none;
 }
 
 /* --- Soczewka ------------------------------------------------------------ */
