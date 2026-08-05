@@ -74,7 +74,7 @@ export function ViewerPanel({
               Twoja ocena: <strong>{myRating}</strong> - {RATING_LABELS[myRating]}
             </>
           ) : (
-            'Oceń klawiszami 1-5. Ponowne kliknięcie gwiazdki cofa ocenę.'
+            'Wybierz od 1 do 5 gwiazdek. Ponowne wybranie tej samej gwiazdki cofa ocenę.'
           )}
         </p>
 
