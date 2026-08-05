@@ -27,7 +27,7 @@ końca” albo kilka niespójnych list. Frame utrzymuje cały proces w jednym mi
 
 1. Zaloguj się otrzymanym adresem e-mail i hasłem.
 2. Przeglądaj galerię, wyszukaj fragment nazwy pliku albo wybierz **Oceniaj dalej**.
-3. Odpowiedz oceną 1–5 na pytanie: „Czy warto wybrać to zdjęcie do obróbki?”. Ocenę możesz
+3. Odpowiedz oceną 1-5 na pytanie: „Czy warto wybrać to zdjęcie do obróbki?”. Ocenę możesz
    później zmienić lub usunąć.
 4. Oznacz sercem zdjęcie, które na pewno chcesz do obróbki, albo zostaw wspólny komentarz.
 5. Administrator porównuje ranking, liczbę głosów i ulubione wszystkich osób.
@@ -48,7 +48,7 @@ Serce jest osobnym, mocniejszym sygnałem: „to zdjęcie na pewno chcę do obr�
 ### Dla każdej osoby
 
 - galeria wszystkich zdjęć z oryginalnymi nazwami plików;
-- ocena 1–5 z możliwością późniejszej zmiany;
+- ocena 1-5 z możliwością późniejszej zmiany;
 - średnia odsłaniana dopiero po własnej ocenie;
 - prywatne ulubione widoczne również dla administratora;
 - wspólne komentarze podpisane imieniem;
@@ -66,7 +66,7 @@ Serce jest osobnym, mocniejszym sygnałem: „to zdjęcie na pewno chcę do obr�
 - smukłe paski przewijania powiększonego kadru na komputerze;
 - powiększanie dwukrotnym dotknięciem i przesuwanie kadru palcem na telefonie;
 - obsługa zdjęć poziomych i pionowych bez obcinania kadru;
-- skróty `1`–`5` do oceniania, `←` i `→` do nawigacji, `F` do ulubionych,
+- skróty `1`-`5` do oceniania, `←` i `→` do nawigacji, `F` do ulubionych,
   `L` do lupy oraz `Esc` do zamknięcia.
 
 ### Dla administratora

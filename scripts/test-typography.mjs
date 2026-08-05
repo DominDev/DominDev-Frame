@@ -3,17 +3,22 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 
-const forbiddenMark = Buffer.from(String.fromCodePoint(0x2014));
+const forbiddenMarks = [0x2013, 0x2014].map((codePoint) =>
+  Buffer.from(String.fromCodePoint(codePoint))
+);
 
-test('pliki śledzone przez Git nie zawierają znaku em dash', () => {
+test('pliki śledzone przez Git używają zwykłych łączników', () => {
   const files = execFileSync('git', ['ls-files', '-z'], { encoding: 'utf8' })
     .split('\0')
     .filter(Boolean);
-  const offenders = files.filter((file) => readFileSync(file).includes(forbiddenMark));
+  const offenders = files.filter((file) => {
+    const content = readFileSync(file);
+    return forbiddenMarks.some((mark) => content.includes(mark));
+  });
 
   assert.deepEqual(
     offenders,
     [],
-    `Zastąp znak em dash zwykłym łącznikiem (-) w plikach: ${offenders.join(', ')}`
+    `Zastąp typograficzny myślnik zwykłym łącznikiem (-) w plikach: ${offenders.join(', ')}`
   );
 });
