@@ -106,12 +106,18 @@
 }
 
 @media (max-width: 720px) {
+  .body {
+    padding-inline: var(--space-2);
+  }
+
   .nameRow {
+    gap: var(--space-1);
     align-items: flex-start;
   }
 
   .name {
     display: -webkit-box;
+    font-size: 0.875rem;
     line-height: 1.3;
     overflow-wrap: anywhere;
     white-space: normal;
