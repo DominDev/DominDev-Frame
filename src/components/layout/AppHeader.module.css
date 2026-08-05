@@ -30,8 +30,7 @@
   align-items: center;
 }
 
-.mobileAccount,
-.mobileLabel {
+.mobileAccount {
   display: none;
 }
 
@@ -99,13 +98,11 @@
     gap: var(--space-1);
   }
 
-  .desktopAccount,
-  .desktopLabel {
+  .desktopAccount {
     display: none;
   }
 
-  .mobileAccount,
-  .mobileLabel {
+  .mobileAccount {
     display: block;
   }
 
