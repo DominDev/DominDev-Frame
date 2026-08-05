@@ -2,14 +2,29 @@
   width: min(36rem, calc(100vw - 2rem));
   max-height: calc(100dvh - 2rem);
   margin: auto;
-  overflow-y: auto;
+  overflow: hidden;
   background: var(--surface);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
 }
 
 .inner {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  max-height: calc(100dvh - 2rem);
+}
+
+.content {
+  min-height: 0;
   padding: var(--space-5);
+  padding-bottom: var(--space-4);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.footer {
+  padding: 0 var(--space-5) var(--space-5);
+  background: var(--surface);
 }
 
 .title {
