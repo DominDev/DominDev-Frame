@@ -47,9 +47,13 @@ export function AppHeader({
 
       <nav className={styles.right} aria-label="Menu">
         {onJumpToUnrated && (
-          <button type="button" className={styles.action} onClick={onJumpToUnrated}>
-            <span className={styles.desktopLabel}>Pierwsze nieocenione</span>
-            <span className={styles.mobileLabel}>Nieocenione</span>
+          <button
+            type="button"
+            className={styles.action}
+            aria-label="Oceniaj dalej — otwórz pierwsze nieocenione zdjęcie"
+            onClick={onJumpToUnrated}
+          >
+            Oceniaj dalej
           </button>
         )}
 
