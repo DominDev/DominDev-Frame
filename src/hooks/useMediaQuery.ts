@@ -23,3 +23,7 @@ export function useMediaQuery(query: string): boolean {
 
 /** Od tej szerokości kafelek mieści gwiazdki w rozmiarze nadającym się do klikania. */
 export const useIsWide = () => useMediaQuery('(min-width: 768px)');
+
+/** Lupa wymaga zarówno miejsca na ekranie, jak i kursora obsługującego hover. */
+export const useCanUseHoverLens = () =>
+  useMediaQuery('(min-width: 901px) and (hover: hover) and (pointer: fine)');

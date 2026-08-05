@@ -276,7 +276,8 @@ plakietkę z oceną, a ocenianie odbywa się w trybie skupienia z dużymi przyci
 drobnych gwiazdek na małym kafelku to porażka użyteczności.
 
 Podgląd: zdjęcie na lewych dwóch trzecich, po prawej panel z oceną, ulubionymi i komentarzami.
-Na telefonie panel wjeżdża od dołu. Każda akcja zapisuje się natychmiast, bez przycisku
+Na telefonie zdjęcie zajmuje około 64% wysokości ekranu i zachowuje pełny kadr niezależnie
+od orientacji, a panel znajduje się poniżej. Każda akcja zapisuje się natychmiast, bez przycisku
 zatwierdzania, ze znikającym potwierdzeniem.
 
 Semantyczny HTML: `<main>`, `<header>`, `<nav>`, `<figure>` i `<figcaption>` na kafelku,

@@ -4,7 +4,7 @@ import type { PhotoStats } from '../../lib/stats';
 import { statsFor } from '../../lib/stats';
 import { photoUrl, prefetch } from '../../lib/photos';
 import { PREFETCH_AHEAD, RATING_VALUES } from '../../config/constants';
-import { useIsWide } from '../../hooks/useMediaQuery';
+import { useCanUseHoverLens } from '../../hooks/useMediaQuery';
 import { MagnifierImage } from './MagnifierImage';
 import { ViewerPanel } from './ViewerPanel';
 import styles from './PhotoViewer.module.css';
@@ -54,7 +54,7 @@ export function PhotoViewer({
   onDeleteComment,
 }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
-  const wide = useIsWide();
+  const hoverLens = useCanUseHoverLens();
   const photo = photos[index];
 
   useEffect(() => {
@@ -145,7 +145,7 @@ export function PhotoViewer({
             alt={`Zdjęcie ${photo.name}`}
             width={photo.w}
             height={photo.h}
-            hoverLens={wide}
+            hoverLens={hoverLens}
           />
 
           <button
