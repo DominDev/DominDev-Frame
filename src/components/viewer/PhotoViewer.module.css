@@ -160,7 +160,9 @@
 @media (max-width: 900px) {
   .layout {
     grid-template-columns: 1fr;
-    grid-template-rows: minmax(45dvh, 55dvh) 1fr;
+    /* Zdjęcie jest głównym zadaniem na telefonie. Zachowujemy pełny kadr
+       niezależnie od jego orientacji, a panel pozostaje dostępny poniżej. */
+    grid-template-rows: 64dvh auto;
     overflow-y: auto;
   }
 
