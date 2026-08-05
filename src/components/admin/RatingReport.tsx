@@ -19,7 +19,7 @@ interface Props {
  */
 export function RatingReport({ photos, ratings, stats }: Props) {
   const [copied, setCopied] = useState(false);
-  const [minVotes, setMinVotes] = useState(0);
+  const [minVotes, setMinVotes] = useState(1);
 
   const rows = useMemo(() => {
     return photos
@@ -62,7 +62,7 @@ export function RatingReport({ photos, ratings, stats }: Props) {
           <label className={styles.inlineLabel}>
             Minimum ocen
             <select value={minVotes} onChange={(e) => setMinVotes(Number(e.target.value))}>
-              <option value={0}>dowolna liczba</option>
+              <option value={0}>wszystkie, także bez ocen</option>
               <option value={1}>co najmniej 1</option>
               <option value={3}>co najmniej 3</option>
               <option value={5}>wszyscy pięcioro</option>
