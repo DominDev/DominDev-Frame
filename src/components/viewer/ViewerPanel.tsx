@@ -52,6 +52,7 @@ export function ViewerPanel({
       </div>
 
       <section className={styles.section}>
+        <p className={styles.ratingQuestion}>Czy warto wybrać to zdjęcie do obróbki?</p>
         <div className={styles.ratingRow}>
           <StarRating
             name={`viewer-${photo.id}`}
@@ -71,7 +72,10 @@ export function ViewerPanel({
         <p className={styles.ratingHint}>
           {myRating ? (
             <>
-              Twoja ocena: <strong>{myRating}</strong> - {RATING_LABELS[myRating]}
+              Twoja ocena:{' '}
+              <strong>
+                {myRating} — {RATING_LABELS[myRating]}
+              </strong>
             </>
           ) : (
             'Wybierz od 1 do 5 gwiazdek. Ponowne wybranie tej samej gwiazdki cofa ocenę.'

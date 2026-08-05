@@ -5,11 +5,11 @@ import type { Rating } from '../types';
  * oceniających rozjazd interpretacji psuje średnią bardziej niż sama skala.
  */
 export const RATING_LABELS: Record<Rating, string> = {
-  1: 'odrzucam',
+  1: 'zdecydowanie nie',
   2: 'raczej nie',
-  3: 'możliwe',
-  4: 'bardzo dobre',
-  5: 'koniecznie wybierz',
+  3: 'nie mam pewności',
+  4: 'raczej tak',
+  5: 'zdecydowanie tak',
 };
 
 export const RATING_VALUES: Rating[] = [1, 2, 3, 4, 5];
