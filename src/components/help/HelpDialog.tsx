@@ -52,7 +52,7 @@ export function HelpDialog({ open, onClose }: Props) {
               <strong>Komentarze:</strong> widzą je wszyscy członkowie rodziny.
             </p>
             <p>
-              <strong>Komputer:</strong> klawisze 1–5 oceniają, strzałki zmieniają zdjęcie, a L
+              <strong>Komputer:</strong> klawisze 1-5 oceniają, strzałki zmieniają zdjęcie, a L
               włącza lub wyłącza lupę.
             </p>
             <p>
