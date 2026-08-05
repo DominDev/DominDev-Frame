@@ -26,18 +26,22 @@ końca” albo kilka niespójnych list. Frame utrzymuje cały proces w jednym mi
 ## Jak wygląda wybór
 
 1. Zaloguj się otrzymanym adresem e-mail i hasłem.
-2. Przeglądaj galerię albo przejdź od razu do pierwszego nieocenionego zdjęcia.
-3. Oceń kadr w skali 1–5. Ocenę możesz później zmienić lub usunąć.
-4. Dodaj zdjęcie do ulubionych albo zostaw komentarz, jeśli wymaga wspólnej decyzji.
+2. Przeglądaj galerię, wyszukaj fragment nazwy pliku albo wybierz **Oceniaj dalej**.
+3. Odpowiedz oceną 1–5 na pytanie: „Czy warto wybrać to zdjęcie do obróbki?”. Ocenę możesz
+   później zmienić lub usunąć.
+4. Oznacz sercem zdjęcie, które na pewno chcesz do obróbki, albo zostaw wspólny komentarz.
 5. Administrator porównuje ranking, liczbę głosów i ulubione wszystkich osób.
 
 | Ocena | Znaczenie |
 |---:|---|
-| 1 | odrzucam |
+| 1 | zdecydowanie nie |
 | 2 | raczej nie |
-| 3 | możliwe |
-| 4 | bardzo dobre |
-| 5 | koniecznie wybierz |
+| 3 | nie mam pewności |
+| 4 | raczej tak |
+| 5 | zdecydowanie tak |
+
+Serce jest osobnym, mocniejszym sygnałem: „to zdjęcie na pewno chcę do obróbki”. Nie wpływa na
+średnią ocen i pozostaje prywatne dla użytkownika oraz administratora.
 
 ## Najważniejsze funkcje
 
@@ -52,14 +56,16 @@ końca” albo kilka niespójnych list. Frame utrzymuje cały proces w jednym mi
 - filtry zdjęć nieocenionych, ulubionych i skomentowanych;
 - dodatkowe filtrowanie po własnej ocenie i średniej;
 - sortowanie po nazwie, średniej, liczbie głosów lub komentarzach;
-- pasek postępu oraz szybkie przejście do pierwszego nieocenionego kadru;
+- pasek postępu oraz przycisk **Oceniaj dalej**, otwierający pierwsze nieocenione zdjęcie;
 - zmiana własnego hasła bez opuszczania aplikacji.
 
 ### Podgląd zdjęcia
 
 - pełnoekranowy tryb skupienia z oceną, ulubionymi i komentarzami;
-- lupa podążająca za kursorem oraz powiększenie całego obrazu;
-- wygodne powiększanie i przesuwanie na ekranie dotykowym;
+- opcjonalna lupa podążająca za kursorem oraz dwa poziomy powiększenia całego obrazu;
+- smukłe paski przewijania powiększonego kadru na komputerze;
+- powiększanie dwukrotnym dotknięciem i przesuwanie kadru palcem na telefonie;
+- obsługa zdjęć poziomych i pionowych bez obcinania kadru;
 - skróty `1`–`5` do oceniania, `←` i `→` do nawigacji, `F` do ulubionych,
   `L` do lupy oraz `Esc` do zamknięcia.
 
@@ -81,7 +87,8 @@ Zdjęcia pozostają wizualnie najważniejsze, a elementy sterujące używają je
 akcentu kolorystycznego.
 
 Aplikacja obsługuje klawiaturę, widoczny fokus, preferencję ograniczonego ruchu oraz układ od
-telefonu 360 px do dużego monitora. Komunikaty błędów i stan braku internetu wskazują, co
+telefonu 320 px do dużego monitora. Otwarty podgląd blokuje galerię w tle, a komunikaty błędów
+i stan braku internetu wskazują, co
 użytkownik może zrobić dalej.
 
 Szczegółowe zasady produktu znajdują się w [PRODUCT.md](PRODUCT.md), a pierwotne decyzje
