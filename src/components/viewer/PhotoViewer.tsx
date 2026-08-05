@@ -60,6 +60,16 @@ export function PhotoViewer({
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
+
+    // Modalny dialog unieruchamia elementy galerii, ale część mobilnych
+    // przeglądarek nadal pozwala przesuwać dokument pod spodem. Blokujemy tylko
+    // stronę, nie wewnętrzny obszar zdjęcia, więc gesty pan-x/pan-y pozostają bez zmian.
+    const root = document.documentElement;
+    const previousRootOverflow = root.style.overflow;
+    const previousBodyOverflow = document.body.style.overflow;
+    root.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+
     if (!dialog.open) dialog.showModal();
 
     // Zamknięcie przed odmontowaniem: przeglądarka zdejmuje dialog z warstwy
@@ -67,6 +77,8 @@ export function PhotoViewer({
     // to proszenie się o kłopoty przy kolejnych zmianach.
     return () => {
       if (dialog.open) dialog.close();
+      root.style.overflow = previousRootOverflow;
+      document.body.style.overflow = previousBodyOverflow;
     };
   }, []);
 
