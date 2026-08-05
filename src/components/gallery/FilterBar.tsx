@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import type { AvgFilter, Filters, MyStarsFilter, SortKey, Tab } from '../../lib/stats';
 import { DEFAULT_FILTERS, isDefaultFilters } from '../../lib/stats';
 import styles from './FilterBar.module.css';
@@ -51,13 +51,51 @@ export function FilterBar({
   onToggleReveal,
 }: Props) {
   const [advancedOpen, setAdvancedOpen] = useState(false);
+  const searchRef = useRef<HTMLInputElement>(null);
   const set = <K extends keyof Filters>(key: K, value: Filters[K]) =>
     onChange({ ...filters, [key]: value });
+  const clearSearch = () => {
+    set('query', '');
+    requestAnimationFrame(() => searchRef.current?.focus());
+  };
   const activeAdvanced =
     Number(filters.myStars !== 'any') + Number(filters.avg !== 'any') + Number(filters.sort !== 'name');
 
   return (
     <div className={styles.root}>
+      <div
+        className={`${styles.search} ${filters.query ? styles.searchHasValue : ''}`}
+        role="search"
+      >
+        <label htmlFor="gallery-photo-search" className="visuallyHidden">
+          Szukaj zdjęcia po nazwie
+        </label>
+        <input
+          id="gallery-photo-search"
+          ref={searchRef}
+          type="search"
+          value={filters.query}
+          placeholder="Wpisz nazwę lub jej fragment"
+          maxLength={100}
+          autoComplete="off"
+          autoCapitalize="none"
+          spellCheck={false}
+          aria-describedby="gallery-result-count"
+          onChange={(event) => set('query', event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === 'Escape' && filters.query) {
+              event.preventDefault();
+              clearSearch();
+            }
+          }}
+        />
+        {filters.query && (
+          <button type="button" className={styles.searchClear} onClick={clearSearch}>
+            Wyczyść
+          </button>
+        )}
+      </div>
+
       <div className={styles.tabs} role="group" aria-label="Szybkie filtry">
         {TABS.map((t) => (
           <button
@@ -139,7 +177,7 @@ export function FilterBar({
       </div>
 
       <div className={styles.status}>
-        <span aria-live="polite">
+        <span id="gallery-result-count" aria-live="polite">
           {shown === total ? `${total} zdjęć` : `${shown} z ${total}`}
         </span>
         {!isDefaultFilters(filters) && (

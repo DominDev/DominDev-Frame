@@ -11,7 +11,7 @@
  *   #/                              galeria
  *   #/admin                         panel admina
  *   #/photo/6U2A7358_png            galeria z otwartym podglądem
- *   #/?tab=unrated&sort=avg         galeria z filtrami
+ *   #/?q=7358&tab=unrated           galeria z wyszukiwaniem i filtrami
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -44,6 +44,7 @@ function parse(hash: string): Route {
   const params = new URLSearchParams(search);
 
   const filters: Filters = {
+    query: (params.get('q') ?? '').slice(0, 100),
     tab: pick(TABS, params.get('tab'), DEFAULT_FILTERS.tab),
     myStars: pick(STARS, params.get('stars'), DEFAULT_FILTERS.myStars),
     avg: pick(AVGS, params.get('avg'), DEFAULT_FILTERS.avg),
@@ -62,6 +63,8 @@ function parse(hash: string): Route {
 
 function build(route: Route): string {
   const params = new URLSearchParams();
+  const searchQuery = route.filters.query.trim();
+  if (searchQuery) params.set('q', searchQuery);
   if (route.filters.tab !== DEFAULT_FILTERS.tab) params.set('tab', route.filters.tab);
   if (route.filters.myStars !== DEFAULT_FILTERS.myStars) params.set('stars', route.filters.myStars);
   if (route.filters.avg !== DEFAULT_FILTERS.avg) params.set('avg', route.filters.avg);

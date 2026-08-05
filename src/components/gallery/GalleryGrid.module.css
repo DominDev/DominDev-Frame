@@ -36,6 +36,25 @@
   border-radius: var(--radius);
 }
 
+.empty p + p {
+  margin-top: var(--space-2);
+}
+
+.emptyAction {
+  min-height: var(--touch-target);
+  padding: 0 var(--space-4);
+  margin-top: var(--space-4);
+  font-weight: 600;
+  color: var(--accent-hover);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+}
+
+.emptyAction:hover {
+  background: var(--surface-hover);
+}
+
 .more {
   display: grid;
   place-items: center;

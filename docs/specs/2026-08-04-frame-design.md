@@ -241,6 +241,7 @@ Rola w tej mapie służy wyłącznie do decyzji, co narysować. Uprawnienia egze
 
 ### Filtry i sortowanie
 
+- Wyszukiwanie po pełnej nazwie pliku lub dowolnym jej fragmencie, łączone z innymi filtrami
 - Zakładki: Wszystkie / Nieocenione przeze mnie / Moje ulubione / Skomentowane
 - Filtr mojej oceny: dokładnie 5, 4 i więcej, 3 i mniej
 - Filtr średniej: 4,5+, 4+, 3+

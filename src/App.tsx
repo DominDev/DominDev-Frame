@@ -65,6 +65,11 @@ export default function App() {
     localStorage.setItem(`${REVEAL_KEY}:${auth.uid}`, value ? '1' : '0');
   };
 
+  const clearPhotoSearch = () => {
+    route.setFilters({ ...route.filters, query: '' });
+    requestAnimationFrame(() => document.getElementById('gallery-photo-search')?.focus());
+  };
+
   const selected = useMemo(
     () =>
       selectPhotos({
@@ -191,6 +196,8 @@ export default function App() {
               commentCounts={data.commentCounts}
               showStars={wide}
               revealAverage={auth.admin && revealAverages}
+              searchQuery={route.filters.query}
+              onClearSearch={clearPhotoSearch}
               onOpen={route.openPhoto}
               onRate={data.rate}
               onToggleFavorite={data.toggleFavorite}

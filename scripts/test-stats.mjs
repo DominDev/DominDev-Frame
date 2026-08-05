@@ -39,6 +39,22 @@ test('domyślne sortowanie nazw jest naturalne', () => {
   assert.deepEqual(selectPhotos(baseInput).map((item) => item.name), ['2.png', '10.png', 'alpha.png']);
 });
 
+test('wyszukiwanie znajduje dowolny fragment nazwy bez rozróżniania wielkości liter', () => {
+  const result = selectPhotos({
+    ...baseInput,
+    filters: { ...DEFAULT_FILTERS, query: '  PHA  ' },
+  });
+  assert.deepEqual(result.map((item) => item.name), ['alpha.png']);
+});
+
+test('wyszukiwanie można łączyć z pozostałymi filtrami', () => {
+  const result = selectPhotos({
+    ...baseInput,
+    filters: { ...DEFAULT_FILTERS, query: 'alpha', tab: 'favorites', avg: 'min45' },
+  });
+  assert.deepEqual(result.map((item) => item.name), ['alpha.png']);
+});
+
 test('szybkie filtry wybierają nieocenione, ulubione i skomentowane', () => {
   const ids = (tab) => selectPhotos({ ...baseInput, filters: { ...DEFAULT_FILTERS, tab } }).map((p) => p.id);
   assert.deepEqual(ids('unrated'), ['alpha']);
