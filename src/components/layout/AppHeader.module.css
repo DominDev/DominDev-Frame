@@ -158,3 +158,16 @@
     text-align: left;
   }
 }
+
+/* Najwęższe telefony nadal dostają wszystkie główne akcje bez trzeciego
+   wiersza nagłówka. Nie zmniejszamy celów dotykowych, tylko boczne odstępy. */
+@media (max-width: 340px) {
+  .root {
+    padding-inline: var(--space-2);
+  }
+
+  .action,
+  .accountSummary {
+    padding-inline: var(--space-2);
+  }
+}
