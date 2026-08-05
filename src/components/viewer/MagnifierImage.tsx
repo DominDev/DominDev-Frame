@@ -258,7 +258,7 @@ export function MagnifierImage({ src, alt, width, height, hoverLens }: Props) {
         tabIndex={zoomed ? 0 : undefined}
         role={zoomed ? 'region' : undefined}
         data-photo-scroll-region={zoomed ? '' : undefined}
-        aria-label={zoomed ? 'Powiększone zdjęcie — użyj klawiszy strzałek, aby je przewijać' : undefined}
+        aria-label={zoomed ? 'Powiększone zdjęcie - użyj klawiszy strzałek, aby je przewijać' : undefined}
         onMouseMove={onMove}
         onMouseLeave={() => setLens(null)}
         onPointerDown={onPointerDown}

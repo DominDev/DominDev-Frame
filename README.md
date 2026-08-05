@@ -81,7 +81,7 @@ Serce jest osobnym, mocniejszym sygnałem: „to zdjęcie na pewno chcę do obr�
 
 ## Projekt doświadczenia
 
-Frame jest narzędziem dla małej, znanej grupy — także dla osób nietechnicznych i starszych.
+Frame jest narzędziem dla małej, znanej grupy - także dla osób nietechnicznych i starszych.
 Dlatego interfejs korzysta ze znanych wzorców, prostego języka i dużych celów dotykowych.
 Zdjęcia pozostają wizualnie najważniejsze, a elementy sterujące używają jednego, spokojnego
 akcentu kolorystycznego.
@@ -101,10 +101,10 @@ zapewnia Firebase, dzięki czemu projekt nie wymaga własnego serwera.
 
 ```mermaid
 flowchart LR
-    U["Rodzina w przeglądarce"] --> P["GitHub Pages — frontend"]
-    P --> A["Firebase Auth — logowanie"]
-    P --> D["Cloud Firestore — oceny, komentarze i ulubione"]
-    P --> S["Firebase Storage — zdjęcia"]
+    U["Rodzina w przeglądarce"] --> P["GitHub Pages - frontend"]
+    P --> A["Firebase Auth - logowanie"]
+    P --> D["Cloud Firestore - oceny, komentarze i ulubione"]
+    P --> S["Firebase Storage - zdjęcia"]
     M["Komputer administratora"] --> D
     M --> S
 ```
@@ -119,7 +119,7 @@ po zalogowaniu, a reguły Firestore ograniczają zapis ocen i ulubionych do ich 
 
 ## Uruchomienie lokalne
 
-Wymagane są Node.js i npm. Konfiguracja klienta Firebase znajduje się już w repozytorium — jak
+Wymagane są Node.js i npm. Konfiguracja klienta Firebase znajduje się już w repozytorium - jak
 w każdej aplikacji webowej nie jest tajnym kluczem; dostęp do danych kontrolują reguły Firebase.
 
 ```powershell
