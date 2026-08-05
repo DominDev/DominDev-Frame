@@ -42,7 +42,7 @@ function PhotoCardBase({
     <figure className={styles.card}>
       <button type="button" className={styles.imageButton} onClick={onOpen}>
         <img
-          className={styles.image}
+          className={`${styles.image} ${photo.h > photo.w ? styles.portrait : ''}`}
           src={photoUrl(photo, 'thumb')}
           alt={`Zdjęcie ${photo.name}`}
           width={photo.w}
