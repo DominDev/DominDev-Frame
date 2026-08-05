@@ -25,42 +25,46 @@ export function HelpDialog({ open, onClose }: Props) {
       onClose={onClose}
     >
       <div className={styles.inner}>
-        <h2 id="rating-help-title" className={styles.title}>
-          Jak wybieramy zdjęcia?
-        </h2>
-        <p className={styles.lead}>
-          Oceniaj zgodnie z własnym zdaniem. Średnią innych osób zobaczysz dopiero po swojej
-          ocenie, żeby niczego Ci nie sugerowała.
-        </p>
+        <div className={styles.content}>
+          <h2 id="rating-help-title" className={styles.title}>
+            Jak wybieramy zdjęcia?
+          </h2>
+          <p className={styles.lead}>
+            Oceniaj zgodnie z własnym zdaniem. Średnią innych osób zobaczysz dopiero po swojej
+            ocenie, żeby niczego Ci nie sugerowała.
+          </p>
 
-        <ol className={styles.scale} aria-label="Znaczenie ocen od 1 do 5">
-          {RATING_VALUES.map((value) => (
-            <li key={value}>
-              <strong>{value}</strong>
-              <span>{RATING_LABELS[value]}</span>
-            </li>
-          ))}
-        </ol>
+          <ol className={styles.scale} aria-label="Znaczenie ocen od 1 do 5">
+            {RATING_VALUES.map((value) => (
+              <li key={value}>
+                <strong>{value}</strong>
+                <span>{RATING_LABELS[value]}</span>
+              </li>
+            ))}
+          </ol>
 
-        <div className={styles.notes}>
-          <p>
-            <strong>Serce:</strong> Twoje ulubione widzisz tylko Ty i Paweł jako administrator.
-          </p>
-          <p>
-            <strong>Komentarze:</strong> widzą je wszyscy członkowie rodziny.
-          </p>
-          <p>
-            <strong>Komputer:</strong> klawisze 1–5 oceniają, strzałki zmieniają zdjęcie, a L
-            włącza lub wyłącza lupę.
-          </p>
-          <p>
-            <strong>Telefon:</strong> dotknij zdjęcia dwukrotnie, żeby je powiększyć.
-          </p>
+          <div className={styles.notes}>
+            <p>
+              <strong>Serce:</strong> Twoje ulubione widzisz tylko Ty i Paweł jako administrator.
+            </p>
+            <p>
+              <strong>Komentarze:</strong> widzą je wszyscy członkowie rodziny.
+            </p>
+            <p>
+              <strong>Komputer:</strong> klawisze 1–5 oceniają, strzałki zmieniają zdjęcie, a L
+              włącza lub wyłącza lupę.
+            </p>
+            <p>
+              <strong>Telefon:</strong> dotknij zdjęcia dwukrotnie, żeby je powiększyć.
+            </p>
+          </div>
         </div>
 
-        <button type="button" className={styles.primary} onClick={onClose}>
-          Rozumiem, zaczynam
-        </button>
+        <div className={styles.footer}>
+          <button type="button" className={styles.primary} onClick={onClose}>
+            Rozumiem, zaczynam
+          </button>
+        </div>
       </div>
     </dialog>
   );
