@@ -78,7 +78,7 @@ function PhotoCardBase({
           {averageVisible ? (
             stats.count > 0 ? (
               <span className={styles.avg}>
-                <strong>{formatAvg(stats.avg)}</strong> / 5
+                Średnia: <strong>{formatAvg(stats.avg)}</strong> / 5
                 <span className={styles.votes}> ({votesLabel(stats.count)})</span>
               </span>
             ) : (
