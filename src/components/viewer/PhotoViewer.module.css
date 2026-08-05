@@ -139,6 +139,12 @@
   font-size: var(--text-lg);
 }
 
+.ratingQuestion {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 650;
+}
+
 .ratingRow {
   display: flex;
   gap: var(--space-3);

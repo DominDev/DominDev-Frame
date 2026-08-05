@@ -34,6 +34,7 @@ export function HelpDialog({ open, onClose }: Props) {
             ocenie, żeby niczego Ci nie sugerowała.
           </p>
 
+          <p className={styles.scaleQuestion}>Czy warto wybrać to zdjęcie do obróbki?</p>
           <ol className={styles.scale} aria-label="Znaczenie ocen od 1 do 5">
             {RATING_VALUES.map((value) => (
               <li key={value}>
