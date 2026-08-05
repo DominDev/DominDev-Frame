@@ -85,8 +85,11 @@ function PhotoCardBase({
               <span className={styles.noVotes}>Nikt jeszcze nie ocenił</span>
             )
           ) : (
-            <span className={styles.hidden} title="Średnia odsłoni się po Twojej ocenie">
-              Średnia ukryta
+            <span
+              className={styles.hidden}
+              title="Po Twojej ocenie pokażemy średnią wszystkich głosów"
+            >
+              Oceń, aby zobaczyć średnią
             </span>
           )}
 
