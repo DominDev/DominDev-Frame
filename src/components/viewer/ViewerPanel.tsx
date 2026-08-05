@@ -74,7 +74,7 @@ export function ViewerPanel({
             <>
               Twoja ocena:{' '}
               <strong>
-                {myRating} — {RATING_LABELS[myRating]}
+                {myRating} - {RATING_LABELS[myRating]}
               </strong>
             </>
           ) : (

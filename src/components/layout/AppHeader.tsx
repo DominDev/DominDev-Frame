@@ -50,7 +50,7 @@ export function AppHeader({
           <button
             type="button"
             className={styles.action}
-            aria-label="Oceniaj dalej — otwórz pierwsze nieocenione zdjęcie"
+            aria-label="Oceniaj dalej - otwórz pierwsze nieocenione zdjęcie"
             onClick={onJumpToUnrated}
           >
             Oceniaj dalej
