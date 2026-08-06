@@ -25,3 +25,9 @@ _processed/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Local Obsidian AI memory junction
+.obsidian-memory/
+
+# Local GitNexus code graph
+.gitnexus/
