@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "gitnexus": {
+      "command": "D:\\Program Files\\npm\\packages\\GitNexus\\gitnexus.cmd",
+      "args": ["mcp"]
+    }
+  }
+}
