@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import type { Photo, Rating } from '../../types';
+import type { EditedPhotosById, Photo, Rating } from '../../types';
 import type { PhotoStats } from '../../lib/stats';
 import { statsFor } from '../../lib/stats';
 import { GALLERY_PAGE_SIZE } from '../../config/constants';
@@ -8,6 +8,7 @@ import styles from './GalleryGrid.module.css';
 
 interface Props {
   photos: Photo[];
+  editedPhotos: EditedPhotosById;
   myRatings: Record<string, Rating>;
   myFavorites: Record<string, true>;
   stats: Map<string, PhotoStats>;
@@ -23,6 +24,7 @@ interface Props {
 
 export function GalleryGrid({
   photos,
+  editedPhotos,
   myRatings,
   myFavorites,
   stats,
@@ -87,6 +89,7 @@ export function GalleryGrid({
           <li key={photo.id}>
             <PhotoCard
               photo={photo}
+              edited={editedPhotos[photo.id] !== undefined}
               myRating={myRatings[photo.id]}
               stats={statsFor(stats, photo.id)}
               commentCount={commentCounts.get(photo.id) ?? 0}

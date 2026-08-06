@@ -62,6 +62,9 @@ Serce jest osobnym, mocniejszym sygnałem: „to zdjęcie na pewno chcę do obr�
 ### Podgląd zdjęcia
 
 - pełnoekranowy tryb skupienia z oceną, ulubionymi i komentarzami;
+- zielona plakietka **Obrobione** w galerii, gdy dostępna jest gotowa wersja zdjęcia;
+- przełączanie **Pokaż po obróbce** / **Pokaż przed obróbką** bez zmiany ocen, ulubionych
+  i komentarzy przypisanych do kadru;
 - opcjonalna lupa podążająca za kursorem oraz dwa poziomy powiększenia całego obrazu;
 - smukłe paski przewijania powiększonego kadru na komputerze;
 - powiększanie dwukrotnym dotknięciem i przesuwanie kadru palcem na telefonie;
@@ -162,6 +165,18 @@ npm run photos:prepare
 # Wysłanie zdjęć do Storage i zapis manifestu
 npm run photos:upload
 
+# Kontrola mapowania zdjęć po obróbce bez zapisu i bez wysyłki
+npm run photos:edited:check -- --source "D:\katalog\ze-zdjeciami"
+
+# Przygotowanie miniatur i wersji pełnych po akceptacji mapowania
+npm run photos:edited:prepare -- --source "D:\katalog\ze-zdjeciami"
+
+# Podgląd planu wysyłki bez zmiany Firebase
+npm run photos:edited:upload
+
+# Wysłanie zdjęć po obróbce i bezpieczne scalenie osobnego manifestu
+npm run photos:edited:upload -- --confirm
+
 # Lista kont
 npm run user:password -- --list
 
@@ -173,8 +188,8 @@ npm run verify:firebase
 npm run rules:verify
 ```
 
-Katalogi `_source/` i `_processed/`, zdjęcia, hasła oraz klucz konta usługi są wykluczone z
-repozytorium.
+Katalogi `_source/`, `_processed/`, `_edited_source/` i `_processed_edited/`, zdjęcia, hasła
+oraz klucz konta usługi są wykluczone z repozytorium.
 
 ## Struktura projektu
 

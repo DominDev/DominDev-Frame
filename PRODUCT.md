@@ -14,7 +14,8 @@ korzysta dodatkowo z raportów administratora.
 
 Frame pomaga każdej osobie niezależnie przejrzeć rodzinną sesję fotograficzną, ocenić
 zdjęcia i wskazać ulubione. Sukces oznacza ukończenie wyboru bez pomyłek i otrzymanie przez
-administratora czytelnej listy plików do dalszej obróbki.
+administratora czytelnej listy plików do dalszej obróbki. Po zakończeniu obróbki Frame pozwala
+porównać gotowy kadr z wersją źródłową bez rozdzielania wcześniejszych decyzji i rozmów.
 
 ## Brand Personality
 
@@ -35,6 +36,7 @@ codziennym językiem bez technicznych szczegółów.
 3. Oceny powstają niezależnie; cudze wyniki nie powinny sugerować własnego wyboru.
 4. Każda akcja ma czytelny stan, możliwość korekty i zrozumiały komunikat błędu.
 5. Najczęstsza ścieżka ma wymagać jak najmniej decyzji i wyjaśnień.
+6. Wersje przed i po obróbce są jednym zdjęciem z tymi samymi ocenami, ulubionymi i komentarzami.
 
 ## Accessibility & Inclusion
 

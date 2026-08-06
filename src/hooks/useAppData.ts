@@ -10,11 +10,19 @@
  */
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import type { Comment, FavoritesByUser, Photo, Rating, RatingsByUser } from '../types';
+import type {
+  Comment,
+  EditedPhotosById,
+  FavoritesByUser,
+  Photo,
+  Rating,
+  RatingsByUser,
+} from '../types';
 import {
   addComment,
   deleteComment,
   editComment,
+  fetchEditedManifest,
   fetchManifest,
   setFavorite,
   setRating,
@@ -27,6 +35,7 @@ import { computeStats, countComments, latestCommentAt } from '../lib/stats';
 
 export interface AppData {
   photos: Photo[];
+  editedPhotos: EditedPhotosById;
   ratings: RatingsByUser;
   myRatings: Record<string, Rating>;
   favorites: FavoritesByUser;
@@ -49,6 +58,7 @@ export interface AppData {
 
 export function useAppData(uid: string | null, admin: boolean): AppData {
   const [photos, setPhotos] = useState<Photo[]>([]);
+  const [editedPhotos, setEditedPhotos] = useState<EditedPhotosById>({});
   const [ratings, setRatings] = useState<RatingsByUser>({});
   const [favorites, setFavorites] = useState<FavoritesByUser>({});
   const [comments, setComments] = useState<Comment[]>([]);
@@ -77,6 +87,16 @@ export function useAppData(uid: string | null, admin: boolean): AppData {
         if (cancelled) return;
         console.error(err);
         setError('Nie udało się wczytać listy zdjęć. Odśwież stronę.');
+      });
+
+    // Wersje po obróbce są dodatkiem. Awaria lub jeszcze niewdrożone reguły
+    // nie mogą zablokować podstawowej galerii i istniejących ocen.
+    fetchEditedManifest()
+      .then((next) => {
+        if (!cancelled) setEditedPhotos(next);
+      })
+      .catch((err) => {
+        if (!cancelled) console.warn('Nie udało się wczytać wersji po obróbce.', err);
       });
 
     return () => {
@@ -163,6 +183,7 @@ export function useAppData(uid: string | null, admin: boolean): AppData {
 
   return {
     photos,
+    editedPhotos,
     ratings,
     myRatings,
     favorites,

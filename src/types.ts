@@ -11,6 +11,22 @@ export interface Photo {
   tFull: string;
 }
 
+/** Opcjonalna wersja zdjęcia po obróbce, powiązana przez niezmienne `photoId`. */
+export interface EditedPhoto {
+  photoId: string;
+  originalName: string;
+  editedName: string;
+  w: number;
+  h: number;
+  /** Tokeny dotyczą wyłącznie obiektów w `photos/edited/`. */
+  tThumb: string;
+  tFull: string;
+  updatedAt: string;
+}
+
+/** id zdjęcia źródłowego > wersja po obróbce */
+export type EditedPhotosById = Record<string, EditedPhoto>;
+
 export type Rating = 1 | 2 | 3 | 4 | 5;
 
 /** uid > (id zdjęcia > ocena) */

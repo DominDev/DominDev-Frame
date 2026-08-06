@@ -22,7 +22,15 @@ import {
   type DocumentData,
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
-import type { Comment, FavoritesByUser, Photo, Rating, RatingsByUser } from '../types';
+import type {
+  Comment,
+  EditedPhoto,
+  EditedPhotosById,
+  FavoritesByUser,
+  Photo,
+  Rating,
+  RatingsByUser,
+} from '../types';
 import { compareNames } from './sort';
 
 // --- Manifest --------------------------------------------------------------
@@ -36,6 +44,21 @@ export async function fetchManifest(): Promise<Photo[]> {
 
   const photos = snap.docs.flatMap((d) => (d.data().photos ?? []) as Photo[]);
   return photos.sort((a, b) => compareNames(a.name, b.name));
+}
+
+/**
+ * Wersje po obróbce mają osobny manifest. Brak dokumentów oznacza po prostu,
+ * że żadne zdjęcie nie zostało jeszcze opublikowane po obróbce.
+ */
+export async function fetchEditedManifest(): Promise<EditedPhotosById> {
+  const snap = await getDocs(query(collection(db, 'editedManifest'), orderBy('index')));
+  const out: EditedPhotosById = {};
+
+  for (const edited of snap.docs.flatMap((d) => (d.data().photos ?? []) as EditedPhoto[])) {
+    if (edited.photoId) out[edited.photoId] = edited;
+  }
+
+  return out;
 }
 
 // --- Oceny -----------------------------------------------------------------

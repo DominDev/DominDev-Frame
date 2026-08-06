@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react';
-import type { Comment, Photo, Rating } from '../../types';
+import { useEffect, useRef, useState } from 'react';
+import type { Comment, EditedPhotosById, Photo, Rating } from '../../types';
 import type { PhotoStats } from '../../lib/stats';
 import { statsFor } from '../../lib/stats';
-import { photoUrl, prefetch } from '../../lib/photos';
+import { editedPhotoUrl, photoUrl, prefetch } from '../../lib/photos';
+import { resolvePhotoVersion } from '../../lib/photo-versions';
 import { PREFETCH_AHEAD, RATING_VALUES } from '../../config/constants';
 import { useCanUseHoverLens } from '../../hooks/useMediaQuery';
 import { MagnifierImage } from './MagnifierImage';
@@ -12,6 +13,7 @@ import styles from './PhotoViewer.module.css';
 interface Props {
   photos: Photo[];
   index: number;
+  editedPhotos: EditedPhotosById;
   myRatings: Record<string, Rating>;
   myFavorites: Record<string, true>;
   stats: Map<string, PhotoStats>;
@@ -38,6 +40,7 @@ interface Props {
 export function PhotoViewer({
   photos,
   index,
+  editedPhotos,
   myRatings,
   myFavorites,
   stats,
@@ -56,6 +59,12 @@ export function PhotoViewer({
   const ref = useRef<HTMLDialogElement>(null);
   const hoverLens = useCanUseHoverLens();
   const photo = photos[index];
+  // ID zamiast booleanu sprawia, że każde kolejne zdjęcie zaczyna od wersji
+  // przed obróbką bez czekania na efekt i bez krótkiego mignięcia złej wersji.
+  const [editedPhotoId, setEditedPhotoId] = useState<string | null>(null);
+  const editedPhoto = photo ? editedPhotos[photo.id] : undefined;
+  const displayed = photo ? resolvePhotoVersion(photo, editedPhoto, editedPhotoId) : null;
+  const showingEdited = displayed?.kind === 'edited';
 
   useEffect(() => {
     const dialog = ref.current;
@@ -91,6 +100,12 @@ export function PhotoViewer({
     }
   }, [photos, index]);
 
+  // Gotowa wersja pobiera się w tle. Pierwsze kliknięcie przełącznika nie
+  // powinno kończyć się pustym polem podczas oczekiwania na Storage.
+  useEffect(() => {
+    if (editedPhoto) prefetch(editedPhotoUrl(editedPhoto, 'full'));
+  }, [editedPhoto]);
+
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       // W polu komentarza klawisze mają służyć do pisania, a nie do oceniania.
@@ -123,6 +138,9 @@ export function PhotoViewer({
   if (!photo) return null;
 
   const photoComments = comments.filter((c) => c.photoId === photo.id);
+  const displayedSrc = displayed?.edited
+    ? editedPhotoUrl(displayed.edited, 'full')
+    : photoUrl(photo, 'full');
 
   return (
     <dialog
@@ -152,11 +170,22 @@ export function PhotoViewer({
             <span className="visuallyHidden">Poprzednie zdjęcie</span>
           </button>
 
+          {editedPhoto && (
+            <button
+              type="button"
+              className={`${styles.versionToggle} ${showingEdited ? styles.versionToggleBack : ''}`}
+              onClick={() => setEditedPhotoId(showingEdited ? null : photo.id)}
+              aria-pressed={showingEdited}
+            >
+              {showingEdited ? 'Pokaż przed obróbką' : 'Pokaż po obróbce'}
+            </button>
+          )}
+
           <MagnifierImage
-            src={photoUrl(photo, 'full')}
-            alt={`Zdjęcie ${photo.name}`}
-            width={photo.w}
-            height={photo.h}
+            src={displayedSrc}
+            alt={`Zdjęcie ${photo.name} ${showingEdited ? 'po obróbce' : 'przed obróbką'}`}
+            width={displayed?.width ?? photo.w}
+            height={displayed?.height ?? photo.h}
             hoverLens={hoverLens}
           />
 

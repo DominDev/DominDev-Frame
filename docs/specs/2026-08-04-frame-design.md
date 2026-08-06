@@ -173,6 +173,8 @@ z raportem w ręku nie udało się znaleźć pliku.
 ```
 photos/thumb/{id}.webp
 photos/full/{id}.webp
+photos/edited/thumb/{id}.webp
+photos/edited/full/{id}.webp
 ```
 
 ### Firestore
@@ -185,6 +187,7 @@ bazie w projekcie, więc obejmuje tę. Poza tym zachowuje się identycznie jak d
 | Kolekcja | Dokument | Zawartość | Odczyt | Zapis |
 |---|---|---|---|---|
 | `manifest` | `chunk-000..002` | tablica `{ id, name, w, h, tThumb, tFull }`, po 250 zdjęć | zalogowani | tylko skrypt admina |
+| `editedManifest` | `chunk-000..` | tablica `{ photoId, originalName, editedName, w, h, tThumb, tFull, updatedAt }` | zalogowani | tylko skrypt admina |
 | `ratings` | `{uid}` | `{ "6U2A7358_png": 4, ... }` | zalogowani | tylko właściciel |
 | `favorites` | `{uid}` | `{ "6U2A7358_png": true, ... }` | właściciel + admin | tylko właściciel |
 | `comments` | auto-id | `{ photoId, uid, text, createdAt, editedAt }` | zalogowani | autor; kasuje autor lub admin |
@@ -224,6 +227,9 @@ Rola w tej mapie służy wyłącznie do decyzji, co narysować. Uprawnienia egze
   podania obecnego hasła przy starej sesji.
 - Galeria-siatka: miniatura, nazwa pliku, moja ocena, średnia, licznik komentarzy,
   serce ulubionych.
+- Zdjęcie z gotową wersją ma plakietkę "Obrobione". Podgląd zawsze zaczyna od wersji przed
+  obróbką i pozwala przełączyć się na wersję po obróbce jednym przyciskiem. Obie wersje mają
+  wspólne oceny, ulubione i komentarze, bo zachowują ten sam identyfikator zdjęcia.
 - Tryb skupienia: jedno zdjęcie na pełnym ekranie, ocena klawiszami `1`-`5`, nawigacja
   strzałkami lub gestem, `F` ulubione, `C` komentarz, `Esc` wyjście, prefetch trzech
   kolejnych zdjęć.
@@ -281,6 +287,10 @@ Na telefonie zdjęcie zajmuje około 64% wysokości ekranu i zachowuje pełny ka
 od orientacji, a panel znajduje się poniżej. Każda akcja zapisuje się natychmiast, bez przycisku
 zatwierdzania, ze znikającym potwierdzeniem.
 
+Jeśli istnieje wersja po obróbce, pod zdjęciem pojawia się jednoznaczny przełącznik
+"Pokaż po obróbce" / "Pokaż przed obróbką". Przejście do innego zdjęcia zawsze przywraca
+widok przed obróbką, żeby użytkownik nie pomylił wersji.
+
 Semantyczny HTML: `<main>`, `<header>`, `<nav>`, `<figure>` i `<figcaption>` na kafelku,
 `<dialog>` na podglądzie, `<fieldset>` z `<input type="radio">` pod gwiazdkami (klawiatura
 i czytniki ekranu działają bez dopisywania ARIA), `<time datetime>` przy komentarzach.
@@ -301,10 +311,14 @@ DominDev-Frame/
 ├─ .github/workflows/deploy.yml     build z base=/DominDev-Frame/, kontrola rozmiaru, deploy
 ├─ _source/                         (gitignore) pliki źródłowe
 ├─ _processed/                      (gitignore) thumb/, full/, mapping.csv
+├─ _edited_source/                  (gitignore) pliki po obróbce
+├─ _processed_edited/               (gitignore) thumb/, full/, manifest.json, mapping.csv
 ├─ docs/specs/                      ta specyfikacja
 ├─ scripts/
 │  ├─ prepare-photos.mjs            sharp: webp, miniatury, EXIF, wymiary, kolizje, mapping.csv
 │  ├─ upload-photos.mjs             wysyłka do bucketu + manifest do Firestore
+│  ├─ prepare-edited-photos.mjs     kontrola mapowania i warianty WebP po obróbce
+│  ├─ upload-edited-photos.mjs      wysyłka obróbek i scalenie editedManifest
 │  └─ set-user-password.mjs         Admin SDK: hasło dowolnej osobie
 ├─ firestore.rules
 ├─ storage.rules

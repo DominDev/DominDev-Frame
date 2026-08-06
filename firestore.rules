@@ -38,6 +38,13 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // Wersje po obróbce są oddzielone od manifestu źródłowego. Tokeny nadal
+    // widzą wyłącznie zalogowani, a zapis wykonuje tylko Admin SDK.
+    match /editedManifest/{chunk} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
     // --- Oceny --------------------------------------------------------------
     //
     // Dokument na osobę: { "<id zdjęcia>": 1..5 }. Odczyt dla wszystkich
