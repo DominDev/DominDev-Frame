@@ -7,6 +7,9 @@ dist/
 _source/*
 !_source/README.md
 _processed/
+_edited_source/*
+!_edited_source/README.md
+_processed_edited/
 
 # Sekrety - klucz konta usługi mieszka w %USERPROFILE%\.frame\, nigdy tutaj.
 # Wzorce muszą łapać także nazwę nadawaną przez konsolę Firebase przy pobieraniu,

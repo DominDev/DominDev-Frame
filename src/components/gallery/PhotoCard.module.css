@@ -37,6 +37,20 @@
   object-fit: contain;
 }
 
+.editedBadge {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  padding: 3px var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--text-on-accent);
+  background: var(--success);
+  border: 1px solid rgb(255 255 255 / 35%);
+  border-radius: 999px;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 24%);
+}
+
 /* Plakietka z własną oceną - wariant dla wąskich ekranów, gdzie nie ma gwiazdek. */
 .myBadge {
   position: absolute;

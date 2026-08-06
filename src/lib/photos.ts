@@ -1,5 +1,5 @@
 import { STORAGE_BUCKET } from '../config/firebase';
-import type { Photo } from '../types';
+import type { EditedPhoto, Photo } from '../types';
 
 /**
  * Adres pliku w Firebase Storage.
@@ -14,6 +14,13 @@ import type { Photo } from '../types';
 export function photoUrl(photo: Photo, variant: 'thumb' | 'full'): string {
   const token = variant === 'thumb' ? photo.tThumb : photo.tFull;
   const path = encodeURIComponent(`photos/${variant}/${photo.id}.webp`);
+  return `https://firebasestorage.googleapis.com/v0/b/${STORAGE_BUCKET}/o/${path}?alt=media&token=${token}`;
+}
+
+/** Adres wersji po obróbce. Osobna funkcja chroni istniejącą ścieżkę zdjęć. */
+export function editedPhotoUrl(photo: EditedPhoto, variant: 'thumb' | 'full'): string {
+  const token = variant === 'thumb' ? photo.tThumb : photo.tFull;
+  const path = encodeURIComponent(`photos/edited/${variant}/${photo.photoId}.webp`);
   return `https://firebasestorage.googleapis.com/v0/b/${STORAGE_BUCKET}/o/${path}?alt=media&token=${token}`;
 }
 

@@ -52,6 +52,10 @@ export function HelpDialog({ open, onClose }: Props) {
               <strong>Komentarze:</strong> widzą je wszyscy członkowie rodziny.
             </p>
             <p>
+              <strong>Obrobione:</strong> zielona plakietka oznacza, że w podglądzie możesz
+              przełączyć zdjęcie między wersją przed i po obróbce.
+            </p>
+            <p>
               <strong>Komputer:</strong> klawisze 1-5 oceniają, strzałki zmieniają zdjęcie, a L
               włącza lub wyłącza lupę.
             </p>

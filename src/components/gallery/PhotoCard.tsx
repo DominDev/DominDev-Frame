@@ -9,6 +9,7 @@ import styles from './PhotoCard.module.css';
 
 interface Props {
   photo: Photo;
+  edited: boolean;
   myRating: Rating | undefined;
   stats: PhotoStats;
   commentCount: number;
@@ -24,6 +25,7 @@ interface Props {
 
 function PhotoCardBase({
   photo,
+  edited,
   myRating,
   stats,
   commentCount,
@@ -50,6 +52,7 @@ function PhotoCardBase({
           loading="lazy"
           decoding="async"
         />
+        {edited && <span className={styles.editedBadge}>Obrobione</span>}
         {myRating !== undefined && !showStars && (
           <span className={styles.myBadge} aria-label={`Twoja ocena: ${myRating}`}>
             {myRating} ★

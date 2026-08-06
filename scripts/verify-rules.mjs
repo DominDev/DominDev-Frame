@@ -3,7 +3,7 @@
  *
  *   npm run rules:verify
  *
- * Przechodzi trzynastopunktową checklistę ze specyfikacji, uderzając w REST API
+ * Przechodzi checklistę ze specyfikacji, uderzając w REST API
  * Firestore tokenami zwykłych użytkowników. Rules są przy takich żądaniach
  * egzekwowane dokładnie tak samo jak dla przeglądarki - inaczej niż przy
  * połączeniu kluczem konta usługi, który reguły omija.
@@ -94,6 +94,7 @@ const tUser = await idTokenFor(user);
 
 console.log('Odczyt bez logowania');
 check(1, 'niezalogowany nie odczyta manifestu', await call('GET', 'manifest/chunk-000'), 'deny');
+check(1, 'niezalogowany nie odczyta obróbek  ', await call('GET', 'editedManifest/chunk-000'), 'deny');
 check(1, 'niezalogowany nie odczyta ocen   ', await call('GET', `ratings/${admin}`), 'deny');
 
 console.log('\nOceny');
@@ -140,6 +141,12 @@ check(
   9,
   'front nie zapisze do manifestu',
   await call('PATCH', 'manifest/chunk-000', { token: tAdmin, body: { fields: { hack: field('x') } }, query: '?updateMask.fieldPaths=hack' }),
+  'deny'
+);
+check(
+  9,
+  'front nie zapisze manifestu obróbek',
+  await call('PATCH', 'editedManifest/chunk-000', { token: tAdmin, body: { fields: { hack: field('x') } }, query: '?updateMask.fieldPaths=hack' }),
   'deny'
 );
 

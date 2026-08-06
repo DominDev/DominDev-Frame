@@ -190,6 +190,7 @@ export default function App() {
             />
             <GalleryGrid
               photos={selected}
+              editedPhotos={data.editedPhotos}
               myRatings={data.myRatings}
               myFavorites={data.myFavorites}
               stats={data.stats}
@@ -210,6 +211,7 @@ export default function App() {
         <PhotoViewer
           photos={viewer.photos}
           index={viewer.index}
+          editedPhotos={data.editedPhotos}
           myRatings={data.myRatings}
           myFavorites={data.myFavorites}
           stats={data.stats}
