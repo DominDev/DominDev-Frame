@@ -47,6 +47,13 @@
   overscroll-behavior: contain;
 }
 
+/* Pionowy plik na pierwszym poziomie powiększenia może nadal być węższy od
+   pola podglądu. Wolne miejsce dzielimy wtedy po obu stronach. Gdy obraz jest
+   szerszy od pola, automatyczne marginesy spadają do zera i nie blokują przewijania. */
+.zoomed .image {
+  margin-inline: auto;
+}
+
 .zoomed::-webkit-scrollbar {
   width: 12px;
   height: 12px;
