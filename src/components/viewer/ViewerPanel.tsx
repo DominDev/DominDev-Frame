@@ -19,6 +19,10 @@ interface Props {
   comments: Comment[];
   currentUid: string;
   admin: boolean;
+  hasEditedVersion: boolean;
+  showingEdited: boolean;
+  onShowOriginal: () => void;
+  onShowEdited: () => void;
   onRate: (value: Rating | null) => void;
   onToggleFavorite: () => void;
   onAddComment: (text: string) => Promise<void>;
@@ -36,6 +40,10 @@ export function ViewerPanel({
   comments,
   currentUid,
   admin,
+  hasEditedVersion,
+  showingEdited,
+  onShowOriginal,
+  onShowEdited,
   onRate,
   onToggleFavorite,
   onAddComment,
@@ -50,6 +58,34 @@ export function ViewerPanel({
         <FileNameChip name={photo.name} />
         <span className={styles.position}>{position}</span>
       </div>
+
+      {hasEditedVersion && (
+        <section className={styles.versionSection} aria-labelledby={`version-${photo.id}`}>
+          <p id={`version-${photo.id}`} className={styles.versionLabel}>
+            Wersja zdjęcia
+          </p>
+          <div className={styles.versionOptions} role="group" aria-label="Wybierz wersję zdjęcia">
+            <button
+              type="button"
+              className={`${styles.versionButton} ${!showingEdited ? styles.versionButtonActive : ''}`}
+              onClick={onShowOriginal}
+              aria-pressed={!showingEdited}
+            >
+              Przed obróbką
+            </button>
+            <button
+              type="button"
+              className={`${styles.versionButton} ${
+                showingEdited ? `${styles.versionButtonActive} ${styles.versionButtonEdited}` : ''
+              }`}
+              onClick={onShowEdited}
+              aria-pressed={showingEdited}
+            >
+              Po obróbce
+            </button>
+          </div>
+        </section>
+      )}
 
       <section className={styles.section}>
         <p className={styles.ratingQuestion}>Czy warto wybrać to zdjęcie do obróbki?</p>

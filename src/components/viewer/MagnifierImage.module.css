@@ -1,7 +1,7 @@
 .root {
   position: relative;
   display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   gap: var(--space-2);
   width: 100%;
   height: 100%;
@@ -103,12 +103,11 @@
 /* --- Sterowanie ---------------------------------------------------------- */
 
 .controls {
-  position: absolute;
-  top: var(--space-2);
-  left: var(--space-2);
-  z-index: 3;
   display: flex;
   gap: var(--space-2);
+  align-items: center;
+  min-width: 0;
+  padding-right: calc(var(--touch-target) + var(--space-3));
 }
 
 .zoomToggle,
@@ -122,10 +121,9 @@
   font-size: var(--text-sm);
   font-weight: 600;
   color: var(--text-on-dark);
-  background: rgb(0 0 0 / 55%);
-  border: 1px solid rgb(255 255 255 / 22%);
+  background: rgb(255 255 255 / 8%);
+  border: 1px solid var(--viewer-border);
   border-radius: 999px;
-  backdrop-filter: blur(4px);
 }
 
 .controlIcon {
@@ -136,17 +134,31 @@
 
 .zoomToggle:hover,
 .zoomReset:hover {
-  background: rgb(0 0 0 / 75%);
+  background: rgb(255 255 255 / 14%);
 }
 
 /* Wyjście z powiększenia jest akcją wtórną, ale nie może wyglądać na wyłączone. */
 .zoomReset {
   font-weight: 500;
-  background: rgb(0 0 0 / 40%);
+  background: transparent;
 }
 
 .hint {
   font-size: var(--text-xs);
   color: var(--text-on-dark-muted);
   text-align: center;
+}
+
+@media (max-width: 480px) {
+  .controlsZoomed {
+    gap: var(--space-1);
+  }
+
+  .controlsZoomed .zoomToggle,
+  .controlsZoomed .zoomReset {
+    flex: 1 1 0;
+    min-width: 0;
+    padding-inline: var(--space-2);
+    line-height: 1.2;
+  }
 }

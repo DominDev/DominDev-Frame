@@ -170,17 +170,6 @@ export function PhotoViewer({
             <span className="visuallyHidden">Poprzednie zdjęcie</span>
           </button>
 
-          {editedPhoto && (
-            <button
-              type="button"
-              className={`${styles.versionToggle} ${showingEdited ? styles.versionToggleBack : ''}`}
-              onClick={() => setEditedPhotoId(showingEdited ? null : photo.id)}
-              aria-pressed={showingEdited}
-            >
-              {showingEdited ? 'Pokaż przed obróbką' : 'Pokaż po obróbce'}
-            </button>
-          )}
-
           <MagnifierImage
             src={displayedSrc}
             alt={`Zdjęcie ${photo.name} ${showingEdited ? 'po obróbce' : 'przed obróbką'}`}
@@ -211,6 +200,10 @@ export function PhotoViewer({
           comments={photoComments}
           currentUid={currentUid}
           admin={admin}
+          hasEditedVersion={editedPhoto !== undefined}
+          showingEdited={showingEdited}
+          onShowOriginal={() => setEditedPhotoId(null)}
+          onShowEdited={() => setEditedPhotoId(photo.id)}
           onRate={(v) => onRate(photo.id, v)}
           onToggleFavorite={() => onToggleFavorite(photo.id)}
           onAddComment={(text) => onAddComment(photo.id, text)}
