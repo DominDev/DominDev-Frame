@@ -27,6 +27,7 @@ const baseInput = {
   stats,
   commentCounts: new Map([['two', 2]]),
   latestComment: new Map([['two', 200], ['alpha', 100]]),
+  editedPhotoIds: new Set(['ten']),
 };
 
 test('statystyki liczą sumę, liczbę głosów i średnią', () => {
@@ -55,11 +56,12 @@ test('wyszukiwanie można łączyć z pozostałymi filtrami', () => {
   assert.deepEqual(result.map((item) => item.name), ['alpha.png']);
 });
 
-test('szybkie filtry wybierają nieocenione, ulubione i skomentowane', () => {
+test('szybkie filtry wybierają nieocenione, ulubione, skomentowane i obrobione', () => {
   const ids = (tab) => selectPhotos({ ...baseInput, filters: { ...DEFAULT_FILTERS, tab } }).map((p) => p.id);
   assert.deepEqual(ids('unrated'), ['alpha']);
   assert.deepEqual(ids('favorites'), ['alpha']);
   assert.deepEqual(ids('commented'), ['two']);
+  assert.deepEqual(ids('edited'), ['ten']);
 });
 
 test('filtry własnej oceny i średniej można łączyć', () => {

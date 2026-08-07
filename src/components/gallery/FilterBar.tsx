@@ -18,6 +18,7 @@ const TABS: { key: Tab; label: string }[] = [
   { key: 'unrated', label: 'Nieocenione' },
   { key: 'favorites', label: 'Ulubione' },
   { key: 'commented', label: 'Skomentowane' },
+  { key: 'edited', label: 'Obrobione' },
 ];
 
 const STARS: { key: MyStarsFilter; label: string }[] = [
@@ -111,20 +112,39 @@ export function FilterBar({
         ))}
       </div>
 
+      <label className={styles.mobileTab}>
+        <span className="visuallyHidden">Pokaż zdjęcia</span>
+        <select
+          aria-label="Pokaż zdjęcia"
+          value={filters.tab}
+          onChange={(event) => set('tab', event.target.value as Tab)}
+        >
+          {TABS.map((tab) => (
+            <option key={tab.key} value={tab.key}>
+              {`Pokaż: ${tab.label} (${counts[tab.key]})`}
+            </option>
+          ))}
+        </select>
+      </label>
+
       <button
         type="button"
         className={styles.advancedToggle}
         aria-expanded={advancedOpen}
         aria-controls="gallery-advanced-filters"
+        aria-label={`${advancedOpen ? 'Ukryj więcej filtrów' : 'Pokaż więcej filtrów'}${
+          activeAdvanced > 0 ? `, aktywne: ${activeAdvanced}` : ''
+        }`}
         onClick={() => setAdvancedOpen((value) => !value)}
       >
-        {advancedOpen ? 'Ukryj dodatkowe filtry' : 'Dodatkowe filtry'}
+        <span>Więcej filtrów</span>
         {activeAdvanced > 0 && <span className={styles.count}>{activeAdvanced}</span>}
       </button>
 
       <div
         id="gallery-advanced-filters"
-        className={`${styles.advanced} ${advancedOpen ? styles.advancedOpen : ''}`}
+        className={styles.advanced}
+        hidden={!advancedOpen}
       >
         <div className={styles.selects}>
           <select

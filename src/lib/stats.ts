@@ -58,7 +58,7 @@ export function latestCommentAt(comments: Comment[]): Map<string, number> {
 
 // --- Filtry ----------------------------------------------------------------
 
-export type Tab = 'all' | 'unrated' | 'favorites' | 'commented';
+export type Tab = 'all' | 'unrated' | 'favorites' | 'commented' | 'edited';
 export type MyStarsFilter = 'any' | 'exactly5' | 'min4' | 'max3';
 export type AvgFilter = 'any' | 'min45' | 'min4' | 'min3';
 export type SortKey = 'name' | 'avg' | 'votes' | 'comment';
@@ -94,6 +94,7 @@ export interface GalleryInput {
   stats: Map<string, PhotoStats>;
   commentCounts: Map<string, number>;
   latestComment: Map<string, number>;
+  editedPhotoIds: ReadonlySet<string>;
 }
 
 function matchesMyStars(filter: MyStarsFilter, mine: Rating | undefined): boolean {
@@ -120,6 +121,8 @@ function matchesTab(tab: Tab, input: GalleryInput, photo: Photo): boolean {
       return input.myFavorites[photo.id] === true;
     case 'commented':
       return (input.commentCounts.get(photo.id) ?? 0) > 0;
+    case 'edited':
+      return input.editedPhotoIds.has(photo.id);
     default:
       return true;
   }

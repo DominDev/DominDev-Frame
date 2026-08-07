@@ -70,6 +70,11 @@ export default function App() {
     requestAnimationFrame(() => document.getElementById('gallery-photo-search')?.focus());
   };
 
+  const editedPhotoIds = useMemo(
+    () => new Set(Object.keys(data.editedPhotos)),
+    [data.editedPhotos]
+  );
+
   const selected = useMemo(
     () =>
       selectPhotos({
@@ -80,8 +85,9 @@ export default function App() {
         stats: data.stats,
         commentCounts: data.commentCounts,
         latestComment: data.latestComment,
+        editedPhotoIds,
       }),
-    [data, route.filters]
+    [data, editedPhotoIds, route.filters]
   );
 
   const tabCounts = useMemo<Record<Tab, number>>(
@@ -90,8 +96,9 @@ export default function App() {
       unrated: data.photos.filter((p) => data.myRatings[p.id] === undefined).length,
       favorites: data.photos.filter((p) => data.myFavorites[p.id]).length,
       commented: data.photos.filter((p) => (data.commentCounts.get(p.id) ?? 0) > 0).length,
+      edited: data.photos.filter((p) => editedPhotoIds.has(p.id)).length,
     }),
-    [data.photos, data.myRatings, data.myFavorites, data.commentCounts]
+    [data.photos, data.myRatings, data.myFavorites, data.commentCounts, editedPhotoIds]
   );
 
   // Podgląd pracuje na liście zamrożonej w chwili otwarcia, żeby ocenienie

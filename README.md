@@ -53,7 +53,7 @@ Serce jest osobnym, mocniejszym sygnałem: „to zdjęcie na pewno chcę do obr�
 - prywatne ulubione widoczne również dla administratora;
 - wspólne komentarze podpisane imieniem;
 - wyszukiwanie zdjęć po pełnej nazwie lub jej fragmencie;
-- filtry zdjęć nieocenionych, ulubionych i skomentowanych;
+- szybkie filtry zdjęć nieocenionych, ulubionych, skomentowanych i obrobionych;
 - dodatkowe filtrowanie po własnej ocenie i średniej;
 - sortowanie po nazwie, średniej, liczbie głosów lub komentarzach;
 - pasek postępu oraz przycisk **Oceniaj dalej**, otwierający pierwsze nieocenione zdjęcie;
