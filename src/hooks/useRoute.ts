@@ -30,7 +30,7 @@ export interface Route {
   filters: Filters;
 }
 
-const TABS: Tab[] = ['all', 'unrated', 'favorites', 'commented'];
+const TABS: Tab[] = ['all', 'unrated', 'favorites', 'commented', 'edited'];
 const STARS: MyStarsFilter[] = ['any', 'exactly5', 'min4', 'max3'];
 const AVGS: AvgFilter[] = ['any', 'min45', 'min4', 'min3'];
 const SORTS: SortKey[] = ['name', 'avg', 'votes', 'comment'];
