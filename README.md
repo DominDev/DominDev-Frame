@@ -63,9 +63,10 @@ Serce jest osobnym, mocniejszym sygnałem: „to zdjęcie na pewno chcę do obr�
 
 - pełnoekranowy tryb skupienia z oceną, ulubionymi i komentarzami;
 - zielona plakietka **Obrobione** w galerii, gdy dostępna jest gotowa wersja zdjęcia;
-- przełączanie **Pokaż po obróbce** / **Pokaż przed obróbką** bez zmiany ocen, ulubionych
-  i komentarzy przypisanych do kadru;
+- czytelny wybór **Przed obróbką** / **Po obróbce** w panelu zdjęcia, bez zmiany ocen,
+  ulubionych i komentarzy przypisanych do kadru;
 - opcjonalna lupa podążająca za kursorem oraz dwa poziomy powiększenia całego obrazu;
+- pasek narzędzi nad zdjęciem, który nie zasłania oglądanego kadru;
 - smukłe paski przewijania powiększonego kadru na komputerze;
 - powiększanie dwukrotnym dotknięciem i przesuwanie kadru palcem na telefonie;
 - obsługa zdjęć poziomych i pionowych bez obcinania kadru;

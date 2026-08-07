@@ -287,9 +287,10 @@ Na telefonie zdjęcie zajmuje około 64% wysokości ekranu i zachowuje pełny ka
 od orientacji, a panel znajduje się poniżej. Każda akcja zapisuje się natychmiast, bez przycisku
 zatwierdzania, ze znikającym potwierdzeniem.
 
-Jeśli istnieje wersja po obróbce, pod zdjęciem pojawia się jednoznaczny przełącznik
-"Pokaż po obróbce" / "Pokaż przed obróbką". Przejście do innego zdjęcia zawsze przywraca
-widok przed obróbką, żeby użytkownik nie pomylił wersji.
+Jeśli istnieje wersja po obróbce, panel zdjęcia pokazuje dwustanowy wybór
+"Przed obróbką" / "Po obróbce". Narzędzia lupy i powiększenia znajdują się w osobnym
+pasku nad zdjęciem, dzięki czemu nie zasłaniają kadru. Przejście do innego zdjęcia zawsze
+przywraca widok przed obróbką, żeby użytkownik nie pomylił wersji.
 
 Semantyczny HTML: `<main>`, `<header>`, `<nav>`, `<figure>` i `<figcaption>` na kafelku,
 `<dialog>` na podglądzie, `<fieldset>` z `<input type="radio">` pod gwiazdkami (klawiatura

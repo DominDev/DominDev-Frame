@@ -253,6 +253,40 @@ export function MagnifierImage({ src, alt, width, height, hoverLens }: Props) {
   return (
     <div className={styles.root}>
       <div
+        className={`${styles.controls} ${zoomed ? styles.controlsZoomed : ''}`}
+        role="group"
+        aria-label="Narzędzia zdjęcia"
+      >
+        {hoverLens && !zoomed && (
+          <button
+            type="button"
+            className={lensEnabled ? styles.zoomToggle : styles.zoomReset}
+            onClick={toggleLens}
+            aria-pressed={lensEnabled}
+            title="Skrót klawiszowy: L"
+          >
+            <ControlIcon name="lens" />
+            {lensEnabled ? 'Wyłącz lupę' : 'Włącz lupę'}
+          </button>
+        )}
+
+        <button type="button" className={styles.zoomToggle} onClick={changeZoom}>
+          <ControlIcon name={zoomButtonIcon} />
+          {zoomButtonLabel}
+        </button>
+        {zoomed && (
+          <button
+            type="button"
+            className={styles.zoomReset}
+            onClick={() => zoomTo(0, { x: 0.5, y: 0.5 })}
+          >
+            <ControlIcon name="fit" />
+            Pokaż całe zdjęcie
+          </button>
+        )}
+      </div>
+
+      <div
         ref={scrollRef}
         className={`${styles.viewport} ${zoomed ? styles.zoomed : ''}`}
         tabIndex={zoomed ? 0 : undefined}
@@ -290,40 +324,6 @@ export function MagnifierImage({ src, alt, width, height, hoverLens }: Props) {
               backgroundPosition: `${lens.bgX}px ${lens.bgY}px`,
             }}
           />
-        )}
-      </div>
-
-      <div className={styles.controls}>
-        {hoverLens && !zoomed && (
-          <button
-            type="button"
-            className={lensEnabled ? styles.zoomToggle : styles.zoomReset}
-            onClick={toggleLens}
-            aria-pressed={lensEnabled}
-            title="Skrót klawiszowy: L"
-          >
-            <ControlIcon name="lens" />
-            {lensEnabled ? 'Wyłącz lupę' : 'Włącz lupę'}
-          </button>
-        )}
-
-        <button
-          type="button"
-          className={styles.zoomToggle}
-          onClick={changeZoom}
-        >
-          <ControlIcon name={zoomButtonIcon} />
-          {zoomButtonLabel}
-        </button>
-        {zoomed && (
-          <button
-            type="button"
-            className={styles.zoomReset}
-            onClick={() => zoomTo(0, { x: 0.5, y: 0.5 })}
-          >
-            <ControlIcon name="fit" />
-            Pokaż całe zdjęcie
-          </button>
         )}
       </div>
 
