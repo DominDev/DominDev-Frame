@@ -45,3 +45,8 @@ test('wybór wersji znajduje się w panelu, poza obszarem zdjęcia', () => {
   assert.match(panel, /Po obróbce/);
   assert.match(panel, /aria-pressed/);
 });
+
+test('lupa mapuje kursor przez rzeczywisty prostokąt obrazu po contain', () => {
+  assert.match(magnifier, /sourcePointInContainedImage/);
+  assert.doesNotMatch(magnifier, /naturalWidth\s*\/\s*rect\.width/);
+});

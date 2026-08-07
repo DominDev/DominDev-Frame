@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type MouseEvent, type PointerEvent } from 'react';
+import { sourcePointInContainedImage } from '../../lib/image-geometry';
 import styles from './MagnifierImage.module.css';
 
 interface Props {
@@ -188,23 +189,32 @@ export function MagnifierImage({ src, alt, width, height, hoverLens }: Props) {
     const img = imgRef.current;
     if (!img || !hoverLens || step > 0 || !lensEnabled) return;
 
-    const rect = img.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const imageBox = img.getBoundingClientRect();
+    const naturalWidth = img.naturalWidth || width;
+    const naturalHeight = img.naturalHeight || height;
+    const sourcePoint = sourcePointInContainedImage(
+      e.clientX - imageBox.left,
+      e.clientY - imageBox.top,
+      imageBox.width,
+      imageBox.height,
+      naturalWidth,
+      naturalHeight
+    );
 
-    if (x < 0 || y < 0 || x > rect.width || y > rect.height) {
+    // `object-fit: contain` może zostawić puste pasy po bokach lub u góry.
+    // Kursor nad takim pasem nie wskazuje żadnego fragmentu zdjęcia.
+    if (!sourcePoint) {
       setLens(null);
       return;
     }
 
-    // Ile pikseli pliku przypada na piksel ekranu, przemnożone przez stałe 2x.
-    const scale = (img.naturalWidth / rect.width) * LENS_SCALE;
+    const viewportBox = e.currentTarget.getBoundingClientRect();
 
     setLens({
-      x,
-      y,
-      bgX: -(x * scale - LENS_SIZE / 2),
-      bgY: -(y * scale - LENS_SIZE / 2),
+      x: e.clientX - viewportBox.left,
+      y: e.clientY - viewportBox.top,
+      bgX: -(sourcePoint.x * LENS_SCALE - LENS_SIZE / 2),
+      bgY: -(sourcePoint.y * LENS_SCALE - LENS_SIZE / 2),
     });
   }
 
@@ -320,7 +330,7 @@ export function MagnifierImage({ src, alt, width, height, hoverLens }: Props) {
               width: LENS_SIZE,
               height: LENS_SIZE,
               backgroundImage: `url("${src}")`,
-              backgroundSize: `${(imgRef.current?.naturalWidth ?? width) * LENS_SCALE}px ${(imgRef.current?.naturalHeight ?? height) * LENS_SCALE}px`,
+              backgroundSize: `${(imgRef.current?.naturalWidth || width) * LENS_SCALE}px ${(imgRef.current?.naturalHeight || height) * LENS_SCALE}px`,
               backgroundPosition: `${lens.bgX}px ${lens.bgY}px`,
             }}
           />
